@@ -1,5 +1,5 @@
 {
-  "name": "@texttree/format-convert-rcl",
+  "name": "@texttree/obs-format-convert-rcl",
   "author": "TextTree.org",
   "version": "0.1.1",
   "description": "",
@@ -10,14 +10,14 @@
   "license": "MIT",
   "private": false,
   "main": "dist/index.js",
-  "url": "https://github.com/texttree/format-convert-rcl",
-  "homepage": "https://github.com/texttree/format-convert-rcl#readme",
+  "url": "https://github.com/texttree/obs-format-convert-rcl",
+  "homepage": "https://github.com/texttree/obs-format-convert-rcl#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/texttree/format-convert-rcl.git"
+    "url": "git+https://github.com/texttree/obs-format-convert-rcl.git"
   },
   "bugs": {
-    "url": "https://github.com/texttree/format-convert-rcl/issues"
+    "url": "https://github.com/texttree/obs-format-convert-rcl/issues"
   },
   "publishConfig": {
     "access": "public"

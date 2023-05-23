@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 
 import axios from 'axios';
 
-import { MdToJson, JsonToHtml } from '@texttree/format-convert-rcl';
+import { MdToJson, JsonToHtml } from '@texttree/obs-format-convert-rcl';
 
 function Component() {
   const [showResult, setShowResult] = useState(false);

@@ -4,7 +4,7 @@
 import { useState, useEffect } from 'react';
 import ReactMarkdown from 'react-markdown';
 
-import { JsonToMd } from '@texttree/format-convert-rcl';
+import { JsonToMd } from '@texttree/obs-format-convert-rcl';
 
 function Component() {
   const [data, setData] = useState({

@@ -2,7 +2,7 @@
 
 ```jsx
 import React from 'react';
-import JsonToPdf from './JsonToPdf';
+import { JsonToPdf } from '@texttree/obs-format-convert-rcl';
 
 function App() {
   const data = {

@@ -3,7 +3,7 @@
 ```jsx
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import MdToZip from './MdToZip';
+import { MdToZip } from '@texttree/obs-format-convert-rcl';
 
 function Component() {
   const url =

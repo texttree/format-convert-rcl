@@ -1,20 +1,20 @@
 <div id="top"></div>
 
-[![Contributors](https://img.shields.io/github/contributors/texttree/format-convert-rcl.svg?style=for-the-badge)](https://github.com/texttree/format-convert-rcl/graphs/contributors)
-[![Forks](https://img.shields.io/github/forks/texttree/format-convert-rcl.svg?style=for-the-badge)](https://github.com/texttree/format-convert-rcl/network/members)
-[![Stargazers](https://img.shields.io/github/stars/texttree/format-convert-rcl.svg?style=for-the-badge)](https://github.com/texttree/format-convert-rcl/stargazers)
-[![Issues](https://img.shields.io/github/issues/texttree/format-convert-rcl.svg?style=for-the-badge)](https://github.com/texttree/format-convert-rcl/issues)
-[![MIT License](https://img.shields.io/github/license/texttree/format-convert-rcl.svg?style=for-the-badge)](https://github.com/texttree/format-convert-rcl/blob/master/LICENSE)
+[![Contributors](https://img.shields.io/github/contributors/texttree/obs-format-convert-rcl.svg?style=for-the-badge)](https://github.com/texttree/obs-format-convert-rcl/graphs/contributors)
+[![Forks](https://img.shields.io/github/forks/texttree/obs-format-convert-rcl.svg?style=for-the-badge)](https://github.com/texttree/obs-format-convert-rcl/network/members)
+[![Stargazers](https://img.shields.io/github/stars/texttree/obs-format-convert-rcl.svg?style=for-the-badge)](https://github.com/texttree/obs-format-convert-rcl/stargazers)
+[![Issues](https://img.shields.io/github/issues/texttree/obs-format-convert-rcl.svg?style=for-the-badge)](https://github.com/texttree/obs-format-convert-rcl/issues)
+[![MIT License](https://img.shields.io/github/license/texttree/obs-format-convert-rcl.svg?style=for-the-badge)](https://github.com/texttree/obs-format-convert-rcl/blob/master/LICENSE)
 
-<h2><div align="center">format-convert-rcl</div></h2>
+<h2><div align="center">obs-format-convert-rcl</div></h2>
 <br />
 
-<center><strong><a href="https://format-convert-rcl.netlify.app">Explore the docs and code playground »</a></strong></center>
+<center><strong><a href="https://obs-format-convert-rcl.netlify.app">Explore the docs and code playground »</a></strong></center>
 <br />
 <br />
 <center>
-  <a href="https://github.com/texttree/format-convert-rcl/issues">Report Bug · </a>
-  <a href="https://github.com/texttree/format-convert-rcl/issues">Request Feature</a>
+  <a href="https://github.com/texttree/obs-format-convert-rcl/issues">Report Bug · </a>
+  <a href="https://github.com/texttree/obs-format-convert-rcl/issues">Request Feature</a>
 </center>
 
 <br />
@@ -47,7 +47,7 @@
 ## About The Project
 
 The React Component Library includes 5 components.
-The name **format-convert-rcl** reflects the main function of the library - converting data from one format to another.
+The name **obs-format-convert-rcl** reflects the main function of the library - converting data from one format to another.
 
 **1. JsonToHtml** takes as arguments a **jsonData** object and a **styleObj** styles object (an optional argument). The function converts the passed JSON object into HTML markup using the specified styles. The structure of the JSON object expected as input must contain the following properties:
 
@@ -102,13 +102,13 @@ Add the library to your React app
 - yarn
 
 ```bash
-yarn add @texttree/format-convert-rcl
+yarn add @texttree/obs-format-convert-rcl
 ```
 
 - npm
 
 ```bash
-npm install @texttree/format-convert-rcl
+npm install @texttree/obs-format-convert-rcl
 ```
 
 <a style="text-align: right; display: block" href="#top">(back to top)</a>
@@ -117,7 +117,7 @@ npm install @texttree/format-convert-rcl
 
 ## Usage
 
-_For examples, please refer to the [Styleguidist link](https://format-convert-rcl.netlify.app)_
+_For examples, please refer to the [Styleguidist link](https://obs-format-convert-rcl.netlify.app)_
 
 <a style="text-align: right; display: block" href="#top">(back to top)</a>
 
@@ -125,7 +125,7 @@ _For examples, please refer to the [Styleguidist link](https://format-convert-rc
 
 ## Roadmap
 
-See the [open issues](https://github.com/texttree/format-convert-rcl/issues) for a full list of proposed features (and known issues).
+See the [open issues](https://github.com/texttree/obs-format-convert-rcl/issues) for a full list of proposed features (and known issues).
 
 <a style="text-align: right; display: block" href="#top">(back to top)</a>
 
@@ -152,7 +152,7 @@ If you would like to fork the repo and create a pull request.
 
 ## License
 
-Distributed under the MIT License. See [LICENSE](https://github.com/texttree/format-convert-rcl/blob/master/LICENSE) for more information.
+Distributed under the MIT License. See [LICENSE](https://github.com/texttree/obs-format-convert-rcl/blob/master/LICENSE) for more information.
 
 <a style="text-align: right; display: block" href="#top">(back to top)</a>
 
@@ -160,6 +160,6 @@ Distributed under the MIT License. See [LICENSE](https://github.com/texttree/for
 
 ## Contact
 
-Project Link: [https://github.com/texttree/format-convert-rcl](https://github.com/texttree/format-convert-rcl)
+Project Link: [https://github.com/texttree/obs-format-convert-rcl](https://github.com/texttree/obs-format-convert-rcl)
 
 <a style="text-align: right; display: block" href="#top">(back to top)</a>
