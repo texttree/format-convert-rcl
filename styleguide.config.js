@@ -10,11 +10,11 @@ let sections = [
   {
     name: 'Conversion block',
     components: [
-      'src/components/MdToJson/MdToJson.js',
-      'src/components/JsonToMd/JsonToMd.js',
-      'src/components/JsonToHtml/JsonToHtml.js',
-      'src/components/JsonToPdf/JsonToPdf.js',
-      'src/components/MdToZip/MdToZip.js',
+      'src/components/MdToJson/MdToJson.jsx',
+      'src/components/JsonToMd/JsonToMd.jsx',
+      'src/components/JsonToHtml/JsonToHtml.jsx',
+      'src/components/JsonToPdf/JsonToPdf.jsx',
+      'src/components/MdToZip/MdToZip.jsx',
     ],
   },
 ];
@@ -31,7 +31,7 @@ module.exports = {
       meta: [
         {
           name: 'description',
-          content: 'React component library template',
+          content: 'React component library for formatting and converting OBS data',
         },
       ],
     },
@@ -74,7 +74,7 @@ module.exports = {
   usageMode: 'expand',
   pagePerSection: true,
   getComponentPathLine(componentPath) {
-    const componentName = path.basename(componentPath, '.js');
+    const componentName = path.basename(componentPath, '.js').split('.')[0];
     return `import { ${componentName} } from '${name}';`;
   },
   updateExample(props, exampleFilePath) {
@@ -95,7 +95,7 @@ module.exports = {
     module: {
       rules: [
         {
-          test: /\.js$/,
+          test: /\.jsx?$/,
           exclude: /node_modules/,
           loader: 'babel-loader',
         },

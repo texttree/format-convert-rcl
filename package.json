@@ -2,7 +2,7 @@
   "name": "@texttree/obs-format-convert-rcl",
   "author": "TextTree.org",
   "version": "0.1.1",
-  "description": "",
+  "description": "React component library for formatting and converting OBS data",
   "keywords": [
     "rcl",
     "react"
