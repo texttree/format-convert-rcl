@@ -1,9 +1,15 @@
-function JsonToMd({ title = '', reference = '', verseObjects = {} }) {
+function JsonToMd({
+  title = '',
+  reference = '',
+  verseObjects = {},
+  imageUrl = 'https://cdn.door43.org/obs/jpg/360px/',
+}) {
   const _title = title ? `# ${title}\n\n` : '';
   const _reference = reference ? `_${reference}_` : '';
   let markdown = '';
   verseObjects.forEach((verseObject) => {
-    const { urlImage, text } = verseObject;
+    const { path, text } = verseObject;
+    const urlImage = imageUrl + path; // Формирование полной ссылки на изображение
     if (urlImage) {
       markdown += `![OBS Image](${urlImage})\n\n`;
     }
