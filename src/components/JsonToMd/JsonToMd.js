@@ -1,7 +1,7 @@
 function JsonToMd({
   title = '',
   reference = '',
-  verseObjects = {},
+  verseObjects = [],
   imageUrl = 'https://cdn.door43.org/obs/jpg/360px/',
 }) {
   const _title = title ? `# ${title}\n\n` : '';
