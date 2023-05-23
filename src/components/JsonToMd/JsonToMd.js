@@ -1,15 +1,15 @@
-function JsonToMd(ref) {
-  const title = ref.title ? `# ${ref.title}\n\n` : '';
-  const reference = ref.reference ? `_${ref.reference}_` : '';
+function JsonToMd({ title = '', reference = '', verseObjects = {} }) {
+  const _title = title ? `# ${title}\n\n` : '';
+  const _reference = reference ? `_${reference}_` : '';
   let markdown = '';
-  ref.verseObjects.forEach((verseObject) => {
+  verseObjects.forEach((verseObject) => {
     const { urlImage, text } = verseObject;
     if (urlImage) {
       markdown += `![OBS Image](${urlImage})\n\n`;
     }
     markdown += `${text}\n\n`;
   });
-  return title + markdown + reference;
+  return _title + markdown + _reference;
 }
 
 export default JsonToMd;
