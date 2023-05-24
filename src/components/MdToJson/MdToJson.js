@@ -17,7 +17,15 @@ function MdToJson(md) {
       } else {
         text = _markdown[n * 2] + '\n' + _markdown[n * 2 + 1];
       }
-      verseObjects.push({ urlImage, text, verse: (n + 1).toString() });
+
+      let path;
+      if (urlImage.startsWith('https://cdn.door43.org/obs/jpg/360px/')) {
+        path = urlImage.replace('https://cdn.door43.org/obs/jpg/360px/', '');
+      } else {
+        path = urlImage;
+      }
+
+      verseObjects.push({ path, text, verse: (n + 1).toString() });
     }
 
     return { verseObjects, title, reference };
