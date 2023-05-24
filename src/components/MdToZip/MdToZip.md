@@ -32,8 +32,19 @@ function Component() {
       return;
     }
 
-    const markdownContent = `# ${jsonData.title}\n\n${jsonData.content}`;
-    MdToZip({ markdown: markdownContent, fileName: 'story-36.md' });
+    const fileData = {
+      isFolder: true,
+      name: 'content',
+      content: [
+        {
+          isFolder: false,
+          name: 'story-36.md',
+          content: `# ${jsonData.title}\n\n${jsonData.content}`,
+        },
+      ],
+    };
+
+    MdToZip({ fileData, fileName: 'my-zip-archive.zip' });
   };
 
   if (errorMessage) return <div>{errorMessage}</div>;
