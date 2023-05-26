@@ -4,16 +4,24 @@ import pdfFonts from 'pdfmake/build/vfs_fonts';
 
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
-function JsonToPdf({ data, styles, filename }) {
-  const generatePdf = () => {
+function JsonToPdf({ data, bookPropertiesObs, styles, filename }) {
+  const generatePdf = async () => {
     const docDefinition = {
-      content: [{ text: data.title, style: 'title' }, { text: '\n\n' }],
+      content: [],
       styles: {
-        title: { fontSize: 32, bold: true, alignment: 'center' },
+        title: { fontSize: 32, bold: true, alignment: 'center', ...styles.projectTitle },
+        intro: { fontSize: 14, alignment: 'left', ...styles.intro },
         reference: { fontSize: 14, italics: true, alignment: 'center' },
         image: { margin: [0, 0, 0, 0], alignment: 'center' },
         text: { fontSize: 12, margin: [0, 0, 0, 16] },
+        back: { fontSize: 14, alignment: 'center', ...styles.back },
         ...styles,
+      },
+      pageBreakBefore: (currentNode) => {
+        if (currentNode.style && currentNode.style.pageBreakBefore === 'always') {
+          return true;
+        }
+        return currentNode.pageBreak === 'before' || currentNode.pageBreak === 'left';
       },
     };
 
@@ -35,8 +43,43 @@ function JsonToPdf({ data, styles, filename }) {
       }
     };
 
-    const addVerseObjects = async () => {
-      for (const verseObject of data.verseObjects) {
+    const addTitlePage = () => {
+      if (
+        bookPropertiesObs &&
+        bookPropertiesObs.projectTitle &&
+        bookPropertiesObs.title
+      ) {
+        docDefinition.content.push({
+          text: bookPropertiesObs.projectTitle,
+          style: 'title',
+          pageBreakBefore: 'always',
+        });
+        docDefinition.content.push({ text: '\n' });
+        docDefinition.content.push({
+          text: bookPropertiesObs.title,
+          style: 'title',
+          pageBreakBefore: 'always',
+        });
+      }
+    };
+
+    const addIntroPage = () => {
+      if (bookPropertiesObs && bookPropertiesObs.intro) {
+        docDefinition.content.push({ text: '', pageBreak: 'before' });
+        docDefinition.content.push({
+          text: bookPropertiesObs.intro,
+          style: 'intro',
+          pageBreak: 'after',
+        });
+      }
+    };
+
+    const addDataToDocument = async (dataItem) => {
+      if (dataItem.title) {
+        docDefinition.content.push({ text: dataItem.title, style: 'title' });
+      }
+
+      for (const verseObject of dataItem.verseObjects) {
         if (verseObject.urlImage) {
           const imageDataUrl = await getImageDataUrl(verseObject.urlImage);
           docDefinition.content.push({
@@ -52,12 +95,33 @@ function JsonToPdf({ data, styles, filename }) {
           });
         }
       }
-      docDefinition.content.push({ text: data.reference, style: 'reference' });
+
+      docDefinition.content.push({
+        text: dataItem.reference,
+        style: 'reference',
+        pageBreak: 'after',
+      });
     };
 
-    addVerseObjects().then(() => {
+    const addBackPage = () => {
+      if (bookPropertiesObs && bookPropertiesObs.back) {
+        docDefinition.content.push({ text: bookPropertiesObs.back, style: 'back' });
+      }
+    };
+
+    const generateAndDownloadPdf = () => {
       pdfMake.createPdf(docDefinition).download(filename);
-    });
+    };
+
+    addTitlePage();
+    addIntroPage();
+
+    for (const dataItem of data) {
+      await addDataToDocument(dataItem);
+    }
+
+    addBackPage();
+    generateAndDownloadPdf();
   };
 
   return (
