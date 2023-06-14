@@ -53,10 +53,10 @@ function Component() {
   ];
 
   const bookPropertiesObs = {
-    projectTitle: 'Project Title', // ToDo если не передаём, то ломается титульная страница
-    title: 'Book Title', // ToDo если не передаём, то ломается титульная страница
-    intro: 'Introduction goes here', // ToDo если не передаём, то пропадает разрыв после титульной страницы
-    back: 'Endpaper', // ToDo если не передаём, то остаётся пустая страница в конце pdf-файла
+    projectTitle: 'Project Title',
+    title: 'Book Title',
+    intro: 'Introduction goes here',
+    back: 'Endpaper',
   };
 
   const styles = {
