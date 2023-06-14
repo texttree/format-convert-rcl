@@ -10,7 +10,7 @@ function JsonToPdf({ data, bookPropertiesObs, styles, filename }) {
       content: [],
       styles: {
         title: { fontSize: 32, bold: true, alignment: 'center', ...styles.projectTitle },
-        intro: { fontSize: 14, alignment: 'left', ...styles.intro },
+        intro: Object.assign({}, styles.intro, { fontSize: 14, alignment: 'left' }),
         reference: { fontSize: 14, italics: true, alignment: 'center' },
         image: { margin: [0, 0, 0, 0], alignment: 'center' },
         text: { fontSize: 12, margin: [0, 0, 0, 16] },
