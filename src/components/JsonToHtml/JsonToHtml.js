@@ -1,4 +1,8 @@
-function JsonToHtml(jsonData, styleObj = {}) {
+function JsonToHtml(
+  jsonData,
+  styleObj = {},
+  imageUrl = 'https://cdn.door43.org/obs/jpg/360px/'
+) {
   const defaultStyleObj = {
     contentWrapper: 'background-color: #fff; padding: 10px;',
     title: 'font-size: 20px; font-weight: bold; margin-bottom: 10px;',
@@ -9,18 +13,19 @@ function JsonToHtml(jsonData, styleObj = {}) {
   };
 
   styleObj = { ...defaultStyleObj, ...styleObj };
-
   const { title, reference, verseObjects } = jsonData;
   const verseHtml = verseObjects
     .map((verse) => {
-      const { urlImage, text } = verse;
+      const { path, text } = verse;
+      const urlImage = imageUrl + path;
+
       return `
-        <div class="verse">
-          <div class="verse-image">
+        <div style="${styleObj.verse}">
+          <div style="${styleObj.verseImage}">
             <img src="${urlImage}" alt="verse-image" style="${styleObj.image}">
           </div>
-          <div class="verse-text">
-            <div class="verse-content" style="${styleObj.paragraph}">${text}</div>
+          <div style="${styleObj.verseText}">
+            <div style="${styleObj.paragraph}">${text}</div>
           </div>
         </div>
       `;
@@ -28,10 +33,10 @@ function JsonToHtml(jsonData, styleObj = {}) {
     .join('');
 
   return `
-    <div class="content-wrapper" style="${styleObj.contentWrapper}">
-      <div class="title" style="${styleObj.title}">${title}</div>
-      <div class="verses" style="${styleObj.verses}">${verseHtml}</div>
-      <div class="reference" style="${styleObj.reference}">${reference}</div>
+    <div style="${styleObj.contentWrapper}">
+      <div style="${styleObj.title}">${title}</div>
+      <div style="${styleObj.verses}">${verseHtml}</div>
+      <div style="${styleObj.reference}">${reference}</div>
     </div>
   `;
 }
