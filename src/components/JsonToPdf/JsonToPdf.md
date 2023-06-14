@@ -56,7 +56,7 @@ function Component() {
     projectTitle: 'Project Title', // ToDo если не передаём, то ломается титульная страница
     title: 'Book Title', // ToDo если не передаём, то ломается титульная страница
     intro: 'Introduction goes here', // ToDo если не передаём, то пропадает разрыв после титульной страницы
-    back: 'Test text', // ToDo если не передаём, то остаётся пустая страница в конце pdf-файла
+    back: 'Endpaper', // ToDo если не передаём, то остаётся пустая страница в конце pdf-файла
   };
 
   const styles = {

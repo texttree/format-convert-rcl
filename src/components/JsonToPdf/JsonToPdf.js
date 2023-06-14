@@ -16,7 +16,7 @@ function JsonToPdf({
       content: [],
       styles: {
         title: { fontSize: 32, bold: true, alignment: 'center', ...styles.projectTitle },
-        intro: Object.assign({}, styles.intro, { fontSize: 14, alignment: 'left' }),
+        intro: { fontSize: 14, alignment: 'left', ...styles.intro },
         reference: { fontSize: 14, italics: true, alignment: 'center' },
         image: { margin: [0, 0, 0, 0], alignment: 'center' },
         text: { fontSize: 12, margin: [0, 0, 0, 16] },
@@ -24,7 +24,7 @@ function JsonToPdf({
         ...styles,
       },
       pageBreakBefore: (currentNode) => {
-        if (currentNode.style && currentNode.style.pageBreakBefore === 'always') {
+        if (currentNode.style?.pageBreakBefore === 'always') {
           return true;
         }
         return currentNode.pageBreak === 'before' || currentNode.pageBreak === 'left';
@@ -50,33 +50,25 @@ function JsonToPdf({
     };
 
     const addTitlePage = () => {
-      if (
-        bookPropertiesObs &&
-        bookPropertiesObs.projectTitle &&
-        bookPropertiesObs.title
-      ) {
-        docDefinition.content.push({
-          text: bookPropertiesObs.projectTitle,
-          style: 'title',
-          pageBreakBefore: 'always',
-        });
-        docDefinition.content.push({ text: '\n' });
-        docDefinition.content.push({
-          text: bookPropertiesObs.title,
-          style: 'title',
-          pageBreakBefore: 'always',
-        });
+      const { projectTitle, title } = bookPropertiesObs || {};
+
+      if (projectTitle && title) {
+        docDefinition.content.push(
+          { text: projectTitle, style: 'title', pageBreakBefore: 'always' },
+          { text: '\n' },
+          { text: title, style: 'title', pageBreakBefore: 'always' }
+        );
       }
     };
 
     const addIntroPage = () => {
-      if (bookPropertiesObs && bookPropertiesObs.intro) {
+      if (bookPropertiesObs?.intro) {
+        docDefinition.content.push(
+          { text: '', pageBreak: 'before' },
+          { text: bookPropertiesObs.intro, style: 'intro', pageBreak: 'after' }
+        );
+      } else if (bookPropertiesObs?.projectTitle && bookPropertiesObs?.title) {
         docDefinition.content.push({ text: '', pageBreak: 'before' });
-        docDefinition.content.push({
-          text: bookPropertiesObs.intro,
-          style: 'intro',
-          pageBreak: 'after',
-        });
       }
     };
 
@@ -85,21 +77,14 @@ function JsonToPdf({
         docDefinition.content.push({ text: dataItem.title, style: 'title' });
       }
 
-      for (const verseObject of dataItem.verseObjects) {
-        if (verseObject.path) {
-          const urlImage = imageUrl + verseObject.path;
-          const imageDataUrl = await getImageDataUrl(urlImage);
-          docDefinition.content.push({
-            image: imageDataUrl,
-            style: 'image',
-          });
+      for (const { path, text } of dataItem.verseObjects) {
+        if (path) {
+          const imageDataUrl = await getImageDataUrl(imageUrl + path);
+          docDefinition.content.push({ image: imageDataUrl, style: 'image' });
         }
 
-        if (verseObject.text) {
-          docDefinition.content.push({
-            text: verseObject.text,
-            style: 'text',
-          });
+        if (text) {
+          docDefinition.content.push({ text, style: 'text' });
         }
       }
 
@@ -111,7 +96,7 @@ function JsonToPdf({
     };
 
     const addBackPage = () => {
-      if (bookPropertiesObs && bookPropertiesObs.back) {
+      if (bookPropertiesObs?.back) {
         docDefinition.content.push({ text: bookPropertiesObs.back, style: 'back' });
       }
     };
