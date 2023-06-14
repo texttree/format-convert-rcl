@@ -4,7 +4,13 @@ import pdfFonts from 'pdfmake/build/vfs_fonts';
 
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
-function JsonToPdf({ data, bookPropertiesObs, styles, filename }) {
+function JsonToPdf({
+  data,
+  bookPropertiesObs,
+  styles,
+  fileName,
+  imageUrl = 'https://cdn.door43.org/obs/jpg/360px/',
+}) {
   const generatePdf = async () => {
     const docDefinition = {
       content: [],
@@ -80,8 +86,9 @@ function JsonToPdf({ data, bookPropertiesObs, styles, filename }) {
       }
 
       for (const verseObject of dataItem.verseObjects) {
-        if (verseObject.urlImage) {
-          const imageDataUrl = await getImageDataUrl(verseObject.urlImage);
+        if (verseObject.path) {
+          const urlImage = imageUrl + verseObject.path;
+          const imageDataUrl = await getImageDataUrl(urlImage);
           docDefinition.content.push({
             image: imageDataUrl,
             style: 'image',
@@ -110,7 +117,7 @@ function JsonToPdf({ data, bookPropertiesObs, styles, filename }) {
     };
 
     const generateAndDownloadPdf = () => {
-      pdfMake.createPdf(docDefinition).download(filename);
+      pdfMake.createPdf(docDefinition).download(fileName);
     };
 
     addTitlePage();

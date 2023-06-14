@@ -8,6 +8,7 @@ export default function JsonToHtml() {
 JsonToHtml.defaultProps = {
   jsonData: {},
   styleObj: {},
+  imageUrl: 'https://cdn.door43.org/obs/jpg/360px/',
 };
 
 JsonToHtml.propTypes = {
@@ -38,4 +39,6 @@ JsonToHtml.propTypes = {
     verses: PropTypes.string,
     reference: PropTypes.string,
   }),
+  /** used to determine the path to the image. This option allows you to select the picture quality and address */
+  imageUrl: PropTypes.string,
 };

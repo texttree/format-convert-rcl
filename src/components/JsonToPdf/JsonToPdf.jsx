@@ -8,7 +8,8 @@ export default function JsonToPdf() {
 JsonToPdf.defaultProps = {
   data: {},
   styles: {},
-  filename: 'file.pdf',
+  fileName: 'file.pdf',
+  imageUrl: 'https://cdn.door43.org/obs/jpg/360px/',
 };
 
 JsonToPdf.propTypes = {
@@ -17,5 +18,18 @@ JsonToPdf.propTypes = {
   /** an object containing custom styles for the PDF document */
   styles: PropTypes.object,
   /** PDF file name to download */
-  filename: PropTypes.string,
+  fileName: PropTypes.string,
+  /** is used to add some data to the PDF file's content book. */
+  bookPropertiesObs: PropTypes.shape({
+    /** project title */
+    projectTitle: PropTypes.string,
+    /** book title */
+    title: PropTypes.string,
+    /** book introduction */
+    intro: PropTypes.string,
+    /** endpaper */
+    back: PropTypes.string,
+  }),
+  /** used to determine the path to the image. This option allows you to select the picture quality and address */
+  imageUrl: PropTypes.string,
 };

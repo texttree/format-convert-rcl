@@ -6,8 +6,15 @@ export default function MdToZip() {
 }
 
 MdToZip.propTypes = {
-  /** string in Markdown format */
-  markdown: PropTypes.string,
+  /** a data structure that contains information about the files and folders to be added to the ZIP archive */
+  fileData: PropTypes.shape({
+    /** file or folder name */
+    name: PropTypes.string,
+    /** file content or folder content array (other fileData objects) */
+    content: PropTypes.arrayOf(PropTypes.object),
+    /** flag indicating whether the item is a folder (true) or a file (false) */
+    isFolder: PropTypes.bool,
+  }),
   /** the name of the file to be created inside the ZIP archive */
-  filename: PropTypes.string,
+  fileName: PropTypes.string,
 };

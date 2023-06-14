@@ -25,6 +25,6 @@ JsonToMd.propTypes = {
       })
     ),
   }),
-  /** provides a basic link to images */
+  /** used to determine the path to the image. This option allows you to select the picture quality and address */
   imageUrl: PropTypes.string,
 };

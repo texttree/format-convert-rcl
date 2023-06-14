@@ -72,7 +72,7 @@ The component accepts props:
 
 - **styles**, - an object containing custom styles for the PDF document. It can include styles for the title, link, image, and text. The passed styles are merged with the default inline styles.
 
-- **filename**, - PDF file name to download.
+- **fileName**, - PDF file name to download.
 
 **4. MdToJson** takes a string in Markdown (md) format and converts it to a JSON object.
 Breaks the input string into blocks based on the empty lines in between. The first block is considered a title, the last block is a link or information about the origin of the content. The remaining blocks are considered verses.
