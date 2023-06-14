@@ -7,5 +7,5 @@ export default function MdToJson() {
 
 MdToJson.propTypes = {
   /** string in Markdown format ('md' ) */
-  md: PropTypes.string,
+  markdown: PropTypes.string,
 };

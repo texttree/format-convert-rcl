@@ -9,7 +9,7 @@ function JsonToMd({
   let markdown = '';
   verseObjects.forEach((verseObject) => {
     const { path, text } = verseObject;
-    const urlImage = imageUrl + path; // Формирование полной ссылки на изображение
+    const urlImage = imageUrl + path;
     if (urlImage) {
       markdown += `![OBS Image](${urlImage})\n\n`;
     }

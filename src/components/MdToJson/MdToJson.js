@@ -1,6 +1,6 @@
-function MdToJson(md) {
+function MdToJson(markdown) {
   try {
-    let _markdown = md.replaceAll('\u200B', '').split(/\n\s*\n\s*/);
+    let _markdown = markdown.replaceAll('\u200B', '').split(/\n\s*\n\s*/);
     const title = _markdown.shift().trim().slice(1);
     let reference = _markdown.pop().trim().slice(1, -1);
     if (reference === '') {

@@ -16,8 +16,14 @@ JsonToMd.propTypes = {
     title: PropTypes.string,
     /** link or information about the origin of the content; */
     reference: PropTypes.string,
-    /** array of verse objects. Each array element has two properties: path and text */
-    verseObjects: PropTypes.array,
+    /** array of verse objects. Each array element has three properties: path, text, and verse. */
+    verseObjects: PropTypes.arrayOf(
+      PropTypes.shape({
+        path: PropTypes.string,
+        text: PropTypes.string,
+        verse: PropTypes.string,
+      })
+    ),
   }),
   /** provides a basic link to images */
   imageUrl: PropTypes.string,

@@ -5,11 +5,6 @@ export default function MdToZip() {
   return <></>;
 }
 
-MdToZip.defaultProps = {
-  // markdown: '',
-  filename: 'document.md',
-};
-
 MdToZip.propTypes = {
   /** string in Markdown format */
   markdown: PropTypes.string,
