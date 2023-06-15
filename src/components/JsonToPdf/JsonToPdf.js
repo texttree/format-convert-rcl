@@ -82,13 +82,17 @@ function JsonToPdf({
       }
 
       for (const { path, text } of dataItem.verseObjects) {
-        if (path) {
-          const imageDataUrl = await getImageDataUrl(imageUrl + path);
-          docDefinition.content.push({ image: imageDataUrl, style: 'image' });
-        }
+        try {
+          if (path) {
+            const imageDataUrl = await getImageDataUrl(imageUrl + path);
+            docDefinition.content.push({ image: imageDataUrl, style: 'image' });
+          }
 
-        if (text) {
-          docDefinition.content.push({ text, style: 'text' });
+          if (text) {
+            docDefinition.content.push({ text, style: 'text' });
+          }
+        } catch (error) {
+          console.error('Error fetching image data URL:', error);
         }
       }
 
