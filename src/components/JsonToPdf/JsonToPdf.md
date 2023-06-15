@@ -5,7 +5,7 @@ import React from 'react';
 import { JsonToPdf } from '@texttree/obs-format-convert-rcl';
 
 function Component() {
-  const obs = [
+  const data = [
     {
       title: '26. Иисус начинает Своё служение',
       verseObjects: [
@@ -74,13 +74,19 @@ function Component() {
 
   const fileName = 'test-book.pdf';
 
+  const handleCreatePdf = () => {
+    JsonToPdf({
+      data,
+      styles,
+      fileName,
+      bookPropertiesObs,
+    });
+  };
+
   return (
-    <JsonToPdf
-      data={obs}
-      styles={styles}
-      fileName={fileName}
-      bookPropertiesObs={bookPropertiesObs}
-    />
+    <div>
+      <button onClick={handleCreatePdf}>Create PDF</button>
+    </div>
   );
 }
 

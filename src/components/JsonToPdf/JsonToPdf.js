@@ -120,11 +120,7 @@ function JsonToPdf({
     generateAndDownloadPdf();
   };
 
-  return (
-    <div>
-      <button onClick={generatePdf}>Create PDF</button>
-    </div>
-  );
+  generatePdf();
 }
 
 export default JsonToPdf;
