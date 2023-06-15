@@ -1,4 +1,3 @@
-import React from 'react';
 import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
 
@@ -9,9 +8,14 @@ function JsonToPdf({
   bookPropertiesObs,
   styles,
   fileName,
+  onRenderStart,
+  onRenderComplete,
   imageUrl = 'https://cdn.door43.org/obs/jpg/360px/',
 }) {
   const generatePdf = async () => {
+    if (typeof onRenderStart === 'function') {
+      onRenderStart();
+    }
     const docDefinition = {
       content: [],
       styles: {
@@ -116,15 +120,30 @@ function JsonToPdf({
     addTitlePage();
     addIntroPage();
 
-    for (const dataItem of data) {
-      await addDataToDocument(dataItem);
-    }
+    try {
+      for (const dataItem of data) {
+        await addDataToDocument(dataItem);
+      }
 
-    addBackPage();
-    generateAndDownloadPdf();
+      if (typeof onRenderComplete === 'function') {
+        onRenderComplete();
+      }
+
+      addBackPage();
+      generateAndDownloadPdf();
+    } catch (error) {
+      console.error('Error rendering PDF:', error);
+      if (typeof onRenderComplete === 'function') {
+        onRenderComplete(error);
+      }
+    }
   };
 
-  generatePdf();
+  return new Promise((resolve, reject) => {
+    generatePdf()
+      .then(() => resolve())
+      .catch((error) => reject(error));
+  });
 }
 
 export default JsonToPdf;

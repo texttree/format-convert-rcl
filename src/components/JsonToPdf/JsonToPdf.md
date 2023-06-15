@@ -74,13 +74,37 @@ function Component() {
 
   const fileName = 'test-book.pdf';
 
+  const onRenderStart = () => {
+    console.log('PDF rendering started');
+  };
+
+  const onRenderComplete = (error) => {
+    if (error) {
+      console.error('PDF rendering failed:', error);
+    } else {
+      console.log('PDF rendering completed');
+    }
+  };
+
+  const handlePdfCreationComplete = () => {
+    console.log('PDF creation completed');
+  };
+
+  const handlePdfCreationError = (error) => {
+    console.error('PDF creation failed:', error);
+  };
+
   const handleCreatePdf = () => {
     JsonToPdf({
       data,
       styles,
       fileName,
       bookPropertiesObs,
-    });
+      onRenderStart,
+      onRenderComplete,
+    })
+      .then(handlePdfCreationComplete)
+      .catch(handlePdfCreationError);
   };
 
   return (
