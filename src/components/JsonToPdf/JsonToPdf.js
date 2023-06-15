@@ -17,11 +17,15 @@ function JsonToPdf({
       styles: {
         title: { fontSize: 32, bold: true, alignment: 'center', ...styles.projectTitle },
         intro: { fontSize: 14, alignment: 'left', ...styles.intro },
-        reference: { fontSize: 14, italics: true, alignment: 'center' },
-        image: { margin: [0, 0, 0, 0], alignment: 'center' },
-        text: { fontSize: 12, margin: [0, 0, 0, 16] },
+        reference: {
+          fontSize: 14,
+          italics: true,
+          alignment: 'center',
+          ...styles.reference,
+        },
+        image: { margin: [0, 0, 0, 0], alignment: 'center', ...styles.image },
+        text: { fontSize: 12, margin: [0, 0, 0, 16], ...styles.text },
         back: { fontSize: 14, alignment: 'center', ...styles.back },
-        ...styles,
       },
       pageBreakBefore: (currentNode) => {
         if (currentNode.style?.pageBreakBefore === 'always') {
