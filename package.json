@@ -45,10 +45,9 @@
     "release:patch": "standard-version --release-as patch"
   },
   "peerDependencies": {
-    "@material-ui/core": "^4.x",
     "prop-types": "^15.x",
-    "react": "^17.x",
-    "react-dom": "^17.x"
+    "react": "^17.x || ^18.x",
+    "react-dom": "^17.x || ^18.x"
   },
   "devDependencies": {
     "@babel/cli": "^7.20.7",
@@ -58,7 +57,6 @@
     "@babel/preset-react": "^7.18.6",
     "@commitlint/cli": "^17.4.1",
     "@commitlint/config-conventional": "^17.4.0",
-    "@material-ui/core": "^4.12.4",
     "axios": "^1.3.4",
     "babel-loader": "^9.1.2",
     "eslint": "^8.32.0",
@@ -71,8 +69,8 @@
     "lint-staged": "^13.1.0",
     "prettier": "^2.8.3",
     "prop-types": "^15.8.1",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "react-json-view": "^1.21.3",
     "react-markdown": "^8.0.6",
     "react-styleguidist": "^13.0.0",

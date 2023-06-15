@@ -6,6 +6,11 @@ export default function JsonToMd() {
 }
 
 JsonToMd.defaultProps = {
+  object: {
+    title: '',
+    reference: '',
+    verseObjects: [],
+  },
   imageUrl: 'https://cdn.door43.org/obs/jpg/360px/',
 };
 

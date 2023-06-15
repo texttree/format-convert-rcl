@@ -5,6 +5,10 @@ export default function MdToZip() {
   return <></>;
 }
 
+MdToZip.defaultProps = {
+  fileName: 'document.zip',
+};
+
 MdToZip.propTypes = {
   /** a data structure that contains information about the files and folders to be added to the ZIP archive */
   fileData: PropTypes.shape({

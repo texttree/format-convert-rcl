@@ -16,7 +16,7 @@ function addFileToZip(zip, fileData) {
   }
 }
 
-function MdToZip({ fileName = 'document.zip', fileData }) {
+function MdToZip({ fileData, fileName = 'document.zip' }) {
   const zip = new JSZip();
 
   // Recursively adding content to an archive

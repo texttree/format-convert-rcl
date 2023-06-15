@@ -36,7 +36,7 @@ function Component() {
   }, []);
 
   useEffect(() => {
-    const generateHtml = async () => {
+    const generateHtml = () => {
       if (jsonData && showResult) {
         const styleObj = {
           contentWrapper: 'background-color: #f1f1f1; padding:32px',
@@ -47,7 +47,7 @@ function Component() {
           image: 'padding-bottom: 16px;',
           reference: 'font-style: italic; margin-top: 16px',
         };
-        const htmlData = await JsonToHtml(jsonData, styleObj);
+        const htmlData = JsonToHtml(jsonData, styleObj);
         setHtmlData(htmlData);
       }
     };
@@ -66,7 +66,12 @@ function Component() {
       <button onClick={handleShowResult} style={btnStyle}>
         {showResult ? 'Hide' : 'Show'} Result
       </button>
-      {showResult && <div dangerouslySetInnerHTML={{ __html: htmlData }} />}
+      {showResult && (
+        <div
+          style={{ height: '550px', overflow: 'auto' }}
+          dangerouslySetInnerHTML={{ __html: htmlData }}
+        />
+      )}
     </>
   );
 }

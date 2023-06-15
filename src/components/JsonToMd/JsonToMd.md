@@ -21,8 +21,8 @@ function Component() {
   const [mdData, setMdData] = useState('');
 
   useEffect(() => {
-    const generateMarkdown = async () => {
-      const mdData = await JsonToMd(data);
+    const generateMarkdown = () => {
+      const mdData = JsonToMd(data);
       setMdData(mdData);
     };
 
