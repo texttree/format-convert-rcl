@@ -11,6 +11,7 @@ function JsonToPdf({
   onRenderStart,
   onRenderComplete,
   imageUrl = 'https://cdn.door43.org/obs/jpg/360px/',
+  showImages = true,
 }) {
   const generatePdf = async () => {
     if (typeof onRenderStart === 'function') {
@@ -87,7 +88,7 @@ function JsonToPdf({
 
       for (const { path, text } of dataItem.verseObjects) {
         try {
-          if (path) {
+          if (path && showImages) {
             const imageDataUrl = await getImageDataUrl(imageUrl + path);
             docDefinition.content.push({ image: imageDataUrl, style: 'image' });
           }

@@ -1,10 +1,12 @@
 ### An example of converting a JSON object to PDF
 
 ```jsx
-import React from 'react';
+import React, { useState } from 'react';
 import { JsonToPdf } from '@texttree/obs-format-convert-rcl';
 
 function Component() {
+  const [showImages, setShowImages] = useState(true);
+
   const data = [
     {
       title: '26. Иисус начинает Своё служение',
@@ -94,6 +96,10 @@ function Component() {
     console.error('PDF creation failed:', error);
   };
 
+  const handleToggleImages = () => {
+    setShowImages(!showImages);
+  };
+
   const handleCreatePdf = () => {
     JsonToPdf({
       data,
@@ -102,6 +108,7 @@ function Component() {
       bookPropertiesObs,
       onRenderStart,
       onRenderComplete,
+      showImages,
     })
       .then(handlePdfCreationComplete)
       .catch(handlePdfCreationError);
@@ -109,6 +116,9 @@ function Component() {
 
   return (
     <div>
+      <button onClick={handleToggleImages}>
+        {showImages ? 'Hide Images' : 'Show Images'}
+      </button>
       <button onClick={handleCreatePdf}>Create PDF</button>
     </div>
   );

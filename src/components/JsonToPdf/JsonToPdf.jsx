@@ -10,6 +10,7 @@ JsonToPdf.defaultProps = {
   styles: {},
   fileName: 'file.pdf',
   imageUrl: 'https://cdn.door43.org/obs/jpg/360px/',
+  showImages: true,
 };
 
 JsonToPdf.propTypes = {
@@ -32,4 +33,6 @@ JsonToPdf.propTypes = {
   }),
   /** used to determine the path to the image. This option allows you to select the picture quality and address */
   imageUrl: PropTypes.string,
+  /** option that disables the display of images in PDF */
+  showImages: PropTypes.bool,
 };
