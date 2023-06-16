@@ -11,6 +11,7 @@ JsonToPdf.defaultProps = {
   fileName: 'file.pdf',
   imageUrl: 'https://cdn.door43.org/obs/jpg/360px/',
   showImages: true,
+  combineVerses: false,
 };
 
 JsonToPdf.propTypes = {
@@ -35,4 +36,6 @@ JsonToPdf.propTypes = {
   imageUrl: PropTypes.string,
   /** option that disables the display of images in PDF */
   showImages: PropTypes.bool,
+  /** option combines verses into one line */
+  combineVerses: PropTypes.bool,
 };

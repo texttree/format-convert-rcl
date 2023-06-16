@@ -6,6 +6,7 @@ import { JsonToPdf } from '@texttree/obs-format-convert-rcl';
 
 function Component() {
   const [showImages, setShowImages] = useState(true);
+  const [combineVerses, setCombineVerses] = useState(false);
 
   const data = [
     {
@@ -88,16 +89,13 @@ function Component() {
     }
   };
 
-  const handlePdfCreationComplete = () => {
-    console.log('PDF creation completed');
-  };
-
-  const handlePdfCreationError = (error) => {
-    console.error('PDF creation failed:', error);
-  };
-
   const handleToggleImages = () => {
-    setShowImages(!showImages);
+    setShowImages((prevShowImages) => !prevShowImages);
+    setCombineVerses(false);
+  };
+
+  const handleToggleCombineVerses = () => {
+    setCombineVerses((prevCombineVerses) => !prevCombineVerses);
   };
 
   const handleCreatePdf = () => {
@@ -109,17 +107,25 @@ function Component() {
       onRenderStart,
       onRenderComplete,
       showImages,
+      combineVerses,
     })
-      .then(handlePdfCreationComplete)
-      .catch(handlePdfCreationError);
+      .then(() => console.log('PDF creation completed'))
+      .catch((error) => console.error('PDF creation failed:', error));
   };
 
   return (
     <div>
-      <button onClick={handleToggleImages}>
+      <button onClick={handleCreatePdf} style={{ marginRight: '10px' }}>
+        Create PDF
+      </button>
+      <button onClick={handleToggleImages} style={{ marginRight: '10px' }}>
         {showImages ? 'Hide Images' : 'Show Images'}
       </button>
-      <button onClick={handleCreatePdf}>Create PDF</button>
+      {!showImages && (
+        <button onClick={handleToggleCombineVerses}>
+          {combineVerses ? 'Split Verses' : 'Combine Verses'}
+        </button>
+      )}
     </div>
   );
 }

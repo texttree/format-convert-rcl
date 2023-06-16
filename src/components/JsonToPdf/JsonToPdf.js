@@ -12,6 +12,7 @@ function JsonToPdf({
   onRenderComplete,
   imageUrl = 'https://cdn.door43.org/obs/jpg/360px/',
   showImages = true,
+  combineVerses = false,
 }) {
   const generatePdf = async () => {
     if (typeof onRenderStart === 'function') {
@@ -86,6 +87,8 @@ function JsonToPdf({
         docDefinition.content.push({ text: dataItem.title, style: 'title' });
       }
 
+      let verseContent = '';
+
       for (const { path, text } of dataItem.verseObjects) {
         try {
           if (path && showImages) {
@@ -94,11 +97,23 @@ function JsonToPdf({
           }
 
           if (text) {
-            docDefinition.content.push({ text, style: 'text' });
+            if (combineVerses) {
+              verseContent += text + ' ';
+            } else {
+              if (verseContent) {
+                docDefinition.content.push({ text: verseContent, style: 'text' });
+                verseContent = '';
+              }
+              docDefinition.content.push({ text, style: 'text' });
+            }
           }
         } catch (error) {
           console.error('Error fetching image data URL:', error);
         }
+      }
+
+      if (combineVerses && verseContent) {
+        docDefinition.content.push({ text: verseContent, style: 'text' });
       }
 
       docDefinition.content.push({
