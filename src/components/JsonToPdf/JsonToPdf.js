@@ -13,6 +13,7 @@ function JsonToPdf({
   imageUrl = 'https://cdn.door43.org/obs/jpg/360px/',
   showImages = true,
   combineVerses = false,
+  showVerseNumber = false,
 }) {
   const generatePdf = async () => {
     if (typeof onRenderStart === 'function') {
@@ -32,6 +33,13 @@ function JsonToPdf({
         image: { margin: [0, 0, 0, 0], alignment: 'center', ...styles.image },
         text: { fontSize: 12, margin: [0, 0, 0, 16], ...styles.text },
         back: { fontSize: 14, alignment: 'center', ...styles.back },
+        verse: {
+          fontSize: 10,
+          bold: true,
+          verticalAlign: 'super',
+          opacity: 0.4,
+          ...styles.verse,
+        },
       },
       pageBreakBefore: (currentNode) => {
         if (currentNode.style?.pageBreakBefore === 'always') {
@@ -89,7 +97,7 @@ function JsonToPdf({
 
       let verseContent = '';
 
-      for (const { path, text } of dataItem.verseObjects) {
+      for (const { path, text, verse } of dataItem.verseObjects) {
         try {
           if (path && showImages) {
             const imageDataUrl = await getImageDataUrl(imageUrl + path);
@@ -97,14 +105,21 @@ function JsonToPdf({
           }
 
           if (text) {
+            let verseText = text;
+            if (showVerseNumber) {
+              verseText = [
+                { text: `${verse} `, style: 'verse' },
+                { text: verseText, style: 'text' },
+              ];
+            }
             if (combineVerses) {
-              verseContent += text + ' ';
+              verseContent += verseText.map((verse) => verse.text).join(' ') + ' ';
             } else {
               if (verseContent) {
                 docDefinition.content.push({ text: verseContent, style: 'text' });
                 verseContent = '';
               }
-              docDefinition.content.push({ text, style: 'text' });
+              docDefinition.content.push({ text: verseText, style: 'text' });
             }
           }
         } catch (error) {
@@ -113,7 +128,14 @@ function JsonToPdf({
       }
 
       if (combineVerses && verseContent) {
-        docDefinition.content.push({ text: verseContent, style: 'text' });
+        const formattedVerseContent = verseContent.split(' ').map((word) => {
+          if (!isNaN(parseInt(word))) {
+            return { text: word + ' ', style: 'verse' };
+          }
+          return word + ' ';
+        });
+
+        docDefinition.content.push({ text: formattedVerseContent, style: 'text' });
       }
 
       docDefinition.content.push({

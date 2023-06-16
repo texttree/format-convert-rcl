@@ -7,6 +7,7 @@ import { JsonToPdf } from '@texttree/obs-format-convert-rcl';
 function Component() {
   const [showImages, setShowImages] = useState(true);
   const [combineVerses, setCombineVerses] = useState(false);
+  const [showVerseNumber, setShowVerseNumber] = useState(false);
 
   const data = [
     {
@@ -15,10 +16,12 @@ function Component() {
         {
           path: 'obs-en-26-01.jpg',
           text: 'После того как Иисус преодолел искушения сатаны, Он вернулся в регион Галилея, туда, где жил. Святой Дух давал Ему большую силу. Иисус ходил по Галилее из города в город, посещая разные места и наставляя людей. Все очень по-доброму отзывались о Нём.',
+          verse: '1',
         },
         {
           path: 'obs-en-26-02.jpg',
           text: 'Однажды Иисус отправился в город Назарет, где провёл Своё детство. В субботу Иисус пошёл в синагогу, место молитвы. Там Ему дали свиток со словами пророка Исайи, чтобы Он прочитал вслух отрывок из этой книги. Иисус развернул свиток и начал читать.',
+          verse: '2',
         },
       ],
       reference:
@@ -30,10 +33,12 @@ function Component() {
         {
           path: 'obs-en-35-01.jpg',
           text: 'Однажды Иисус учил толпу людей, собравшихся Его послушать. Среди них были сборщики налогов и другие люди, которые не исполняли закон Моисея, и поэтому их считали грешниками.',
+          verse: '1',
         },
         {
           path: 'obs-en-35-02.jpg',
           text: 'Фарисеи и учителя Закона увидели, что Иисус общался с теми людьми как с друзьями. Поэтому они стали возмущаться и говорить друг другу: «Он поступает неправильно, разговаривает с грешниками и даже ест вместе с ними». Иисус услышал их и рассказал им такую историю:',
+          verse: '2',
         },
       ],
       reference: 'Библейская история из Евангелия от Луки 15:11-32',
@@ -44,10 +49,12 @@ function Component() {
         {
           path: 'obs-en-46-01.jpg',
           text: 'В те времена жил один человек по имени Савл. Он был против учения об Иисусе. Савл присутствовал на том месте, где бросали камни в Стефана, и охранял одежду людей, убивавших его. Затем Савл стал преследовать верующих. Он ходил из дома в дом в Иерусалиме, хватал мужчин и женщин и бросал их в тюрьмы. Однажды Савл пришёл к первосвященнику и попросил у него письма к синагогам в Дамаске, чтобы там у него было право арестовывать и отправлять в Иерусалим последователей Иисуса.',
+          verse: '1',
         },
         {
           path: 'obs-en-46-02.jpg',
           text: 'Получив такие письма, Савл отправился в Дамаск. Когда он был недалеко от города, яркий свет с неба осветил всё вокруг, и Савл упал на землю. Он услышал, как Кто-то сказал: «Савл! Савл! Почему ты преследуешь Меня?» Савл спросил: «Кто ты, Господин?» Голос ответил: «Я — Иисус, Которого Ты преследуешь!»',
+          verse: '2',
         },
       ],
       reference:
@@ -98,6 +105,10 @@ function Component() {
     setCombineVerses((prevCombineVerses) => !prevCombineVerses);
   };
 
+  const handleToggleVerseNumber = () => {
+    setShowVerseNumber((prevShowVerseNumber) => !prevShowVerseNumber);
+  };
+
   const handleCreatePdf = () => {
     JsonToPdf({
       data,
@@ -108,6 +119,7 @@ function Component() {
       onRenderComplete,
       showImages,
       combineVerses,
+      showVerseNumber,
     })
       .then(() => console.log('PDF creation completed'))
       .catch((error) => console.error('PDF creation failed:', error));
@@ -117,6 +129,9 @@ function Component() {
     <div>
       <button onClick={handleCreatePdf} style={{ marginRight: '10px' }}>
         Create PDF
+      </button>
+      <button onClick={handleToggleVerseNumber} style={{ marginRight: '10px' }}>
+        {showVerseNumber ? 'Hide Verse Number' : 'Show Verse Number'}
       </button>
       <button onClick={handleToggleImages} style={{ marginRight: '10px' }}>
         {showImages ? 'Hide Images' : 'Show Images'}

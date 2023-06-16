@@ -12,6 +12,7 @@ JsonToPdf.defaultProps = {
   imageUrl: 'https://cdn.door43.org/obs/jpg/360px/',
   showImages: true,
   combineVerses: false,
+  showVerseNumber: false,
 };
 
 JsonToPdf.propTypes = {
@@ -38,4 +39,6 @@ JsonToPdf.propTypes = {
   showImages: PropTypes.bool,
   /** option combines verses into one line */
   combineVerses: PropTypes.bool,
+  /** parameter that determines whether verse numbers should be displayed when creating a PDF document */
+  showVerseNumber: PropTypes.bool,
 };
