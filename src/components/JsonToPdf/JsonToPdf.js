@@ -5,15 +5,15 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 function JsonToPdf({
   data,
-  bookPropertiesObs,
   styles,
   fileName,
   onRenderStart,
   onRenderComplete,
-  imageUrl = 'https://cdn.door43.org/obs/jpg/360px/',
+  bookPropertiesObs,
   showImages = true,
   combineVerses = false,
   showVerseNumber = false,
+  imageUrl = 'https://cdn.door43.org/obs/jpg/360px/',
 }) {
   const generatePdf = async () => {
     if (typeof onRenderStart === 'function') {
@@ -106,7 +106,12 @@ function JsonToPdf({
 
           if (text) {
             let verseText = text;
-            if (showVerseNumber) {
+            if (showVerseNumber && combineVerses) {
+              verseText = [
+                { text: ` ${verse}`, style: 'verse' },
+                { text: verseText, style: 'text' },
+              ];
+            } else if (showVerseNumber) {
               verseText = [
                 { text: `${verse} `, style: 'verse' },
                 { text: verseText, style: 'text' },
@@ -128,12 +133,23 @@ function JsonToPdf({
       }
 
       if (combineVerses && verseContent) {
-        const formattedVerseContent = verseContent.split(' ').map((word) => {
-          if (!isNaN(parseInt(word))) {
-            return { text: word + ' ', style: 'verse' };
-          }
-          return word + ' ';
-        });
+        const formattedVerseContent = verseContent
+          .split(' ')
+          .map((word, index, array) => {
+            if (!isNaN(parseInt(word))) {
+              const nextWord = array[index - 1];
+              if (nextWord === '') {
+                return { text: word + ' ', style: 'verse' };
+              }
+              return { text: word + ' ', style: 'text' };
+            } else if (word === '') {
+              const nextWord = array[index + 1];
+              if (nextWord && nextWord !== '') {
+                return word;
+              }
+            }
+            return word + ' ';
+          });
 
         docDefinition.content.push({ text: formattedVerseContent, style: 'text' });
       }
