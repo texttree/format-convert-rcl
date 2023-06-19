@@ -8,6 +8,7 @@ function Component() {
   const [showImages, setShowImages] = useState(true);
   const [combineVerses, setCombineVerses] = useState(false);
   const [showVerseNumber, setShowVerseNumber] = useState(false);
+  const [isCreatingPdf, setIsCreatingPdf] = useState(false);
 
   const data = [
     {
@@ -84,18 +85,6 @@ function Component() {
 
   const fileName = 'test-book.pdf';
 
-  const onRenderStart = () => {
-    console.log('PDF rendering started');
-  };
-
-  const onRenderComplete = (error) => {
-    if (error) {
-      console.error('PDF rendering failed:', error);
-    } else {
-      console.log('PDF rendering completed');
-    }
-  };
-
   const handleToggleImages = () => {
     setShowImages((prevShowImages) => !prevShowImages);
     setCombineVerses(false);
@@ -110,25 +99,32 @@ function Component() {
   };
 
   const handleCreatePdf = () => {
+    setIsCreatingPdf(true);
+
     JsonToPdf({
       data,
       styles,
       fileName,
       bookPropertiesObs,
-      onRenderStart,
-      onRenderComplete,
       showImages,
       combineVerses,
       showVerseNumber,
     })
       .then(() => console.log('PDF creation completed'))
-      .catch((error) => console.error('PDF creation failed:', error));
+      .catch((error) => console.error('PDF creation failed:', error))
+      .finally(() => {
+        setIsCreatingPdf(false);
+      });
   };
 
   return (
     <div>
-      <button onClick={handleCreatePdf} style={{ marginRight: '10px' }}>
-        Create PDF
+      <button
+        onClick={handleCreatePdf}
+        style={{ marginRight: '10px' }}
+        disabled={isCreatingPdf}
+      >
+        {isCreatingPdf ? 'Creating PDF...' : 'Create PDF'}
       </button>
       <button onClick={handleToggleVerseNumber} style={{ marginRight: '10px' }}>
         {showVerseNumber ? 'Hide Verse Number' : 'Show Verse Number'}

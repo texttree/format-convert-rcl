@@ -6,8 +6,6 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
 function JsonToPdf({
   data,
   styles,
-  onRenderStart,
-  onRenderComplete,
   bookPropertiesObs,
   showImages = true,
   fileName = 'file.pdf',
@@ -16,9 +14,6 @@ function JsonToPdf({
   imageUrl = 'https://cdn.door43.org/obs/jpg/360px/',
 }) {
   const generatePdf = async () => {
-    if (typeof onRenderStart === 'function') {
-      onRenderStart();
-    }
     const docDefinition = {
       content: [],
       styles: {
@@ -36,7 +31,6 @@ function JsonToPdf({
         verse: {
           fontSize: 10,
           bold: true,
-          // verticalAlign: 'super',
           opacity: 0.4,
           ...styles.verse,
         },
@@ -179,17 +173,10 @@ function JsonToPdf({
         await addDataToDocument(dataItem);
       }
 
-      if (typeof onRenderComplete === 'function') {
-        onRenderComplete();
-      }
-
       addBackPage();
       generateAndDownloadPdf();
     } catch (error) {
       console.error('Error rendering PDF:', error);
-      if (typeof onRenderComplete === 'function') {
-        onRenderComplete(error);
-      }
     }
   };
 
