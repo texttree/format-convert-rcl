@@ -74,10 +74,10 @@ function Component() {
       width: 'auto',
       height: 300,
       alignment: 'center',
-      margin: [0, 0, 0, 16],
+      margin: [0, 16, 0, 16],
     },
     text: {
-      fontSize: 14,
+      fontSize: 16,
       margin: [0, 0, 0, 10],
     },
   };
