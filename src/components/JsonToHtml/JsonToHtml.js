@@ -1,6 +1,6 @@
 function JsonToHtml(
   jsonData,
-  styleObj = {},
+  styleObj,
   imageUrl = 'https://cdn.door43.org/obs/jpg/360px/'
 ) {
   const defaultStyleObj = {

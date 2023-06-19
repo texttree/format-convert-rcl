@@ -6,8 +6,6 @@ export default function JsonToPdf() {
 }
 
 JsonToPdf.defaultProps = {
-  data: {},
-  styles: {},
   fileName: 'file.pdf',
   imageUrl: 'https://cdn.door43.org/obs/jpg/360px/',
   showImages: true,

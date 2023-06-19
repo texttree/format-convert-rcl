@@ -6,11 +6,11 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
 function JsonToPdf({
   data,
   styles,
-  fileName,
   onRenderStart,
   onRenderComplete,
   bookPropertiesObs,
   showImages = true,
+  fileName = 'file.pdf',
   combineVerses = false,
   showVerseNumber = false,
   imageUrl = 'https://cdn.door43.org/obs/jpg/360px/',
@@ -36,7 +36,7 @@ function JsonToPdf({
         verse: {
           fontSize: 10,
           bold: true,
-          verticalAlign: 'super',
+          // verticalAlign: 'super',
           opacity: 0.4,
           ...styles.verse,
         },

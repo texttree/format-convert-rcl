@@ -6,8 +6,6 @@ export default function JsonToHtml() {
 }
 
 JsonToHtml.defaultProps = {
-  jsonData: {},
-  styleObj: {},
   imageUrl: 'https://cdn.door43.org/obs/jpg/360px/',
 };
 
