@@ -7,6 +7,7 @@ function JsonToPdf({
   data,
   styles,
   bookPropertiesObs,
+  imageWidth = 500,
   showImages = true,
   fileName = 'file.pdf',
   combineVerses = false,
@@ -17,23 +18,14 @@ function JsonToPdf({
     const docDefinition = {
       content: [],
       styles: {
-        title: { fontSize: 32, bold: true, alignment: 'center', ...styles.projectTitle },
-        intro: { fontSize: 14, alignment: 'left', ...styles.intro },
-        reference: {
-          fontSize: 14,
-          italics: true,
-          alignment: 'center',
-          ...styles.reference,
-        },
-        image: { margin: [0, 0, 0, 0], alignment: 'center', ...styles.image },
-        text: { fontSize: 12, margin: [0, 0, 0, 16], ...styles.text },
-        back: { fontSize: 14, alignment: 'center', ...styles.back },
-        verse: {
-          fontSize: 10,
-          bold: true,
-          opacity: 0.4,
-          ...styles.verse,
-        },
+        text: styles.text,
+        back: styles.back,
+        title: styles.title,
+        intro: styles.intro,
+        image: styles.image,
+        reference: styles.reference,
+        verseNumber: styles.verseNumber,
+        projectTitle: styles.projectTitle,
       },
       pageBreakBefore: (currentNode) => {
         if (currentNode.style?.pageBreakBefore === 'always') {
@@ -66,9 +58,9 @@ function JsonToPdf({
 
       if (projectTitle && title) {
         docDefinition.content.push(
-          { text: projectTitle, style: 'title', pageBreakBefore: 'always' },
+          { text: projectTitle, style: 'projectTitle', pageBreakBefore: 'always' },
           { text: '\n' },
-          { text: title, style: 'title', pageBreakBefore: 'always' }
+          { text: title, style: 'projectTitle', pageBreakBefore: 'always' }
         );
       }
     };
@@ -86,7 +78,11 @@ function JsonToPdf({
 
     const addDataToDocument = async (dataItem) => {
       if (dataItem.title) {
-        docDefinition.content.push({ text: dataItem.title, style: 'title' });
+        docDefinition.content.push({
+          text: dataItem.title,
+          pageBreak: 'after',
+          style: 'title',
+        });
       }
 
       let verseContent = '';
@@ -95,19 +91,23 @@ function JsonToPdf({
         try {
           if (path && showImages) {
             const imageDataUrl = await getImageDataUrl(imageUrl + path);
-            docDefinition.content.push({ image: imageDataUrl, style: 'image' });
+            docDefinition.content.push({
+              image: imageDataUrl,
+              width: imageWidth,
+              style: 'image',
+            });
           }
 
           if (text) {
             let verseText = text;
             if (showVerseNumber && combineVerses) {
               verseText = [
-                { text: ` ${verse}`, style: 'verse' },
+                { text: ` ${verse}`, style: 'verseNumber' },
                 { text: verseText, style: 'text' },
               ];
             } else if (showVerseNumber) {
               verseText = [
-                { text: `${verse} `, style: 'verse' },
+                { text: `${verse} `, style: 'verseNumber' },
                 { text: verseText, style: 'text' },
               ];
             }
@@ -133,7 +133,7 @@ function JsonToPdf({
             if (!isNaN(parseInt(word))) {
               const nextWord = array[index - 1];
               if (nextWord === '') {
-                return { text: word + ' ', style: 'verse' };
+                return { text: word + ' ', style: 'verseNumber' };
               }
               return { text: word + ' ', style: 'text' };
             } else if (word === '') {

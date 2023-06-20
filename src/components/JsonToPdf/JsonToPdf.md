@@ -1,3 +1,25 @@
+### Style properties:
+
+<ul>
+    <li>font: string: name of the font</li>
+    <li>fontSize: number: size of the font in pt</li>
+    <li>fontFeatures: string[]: array of advanced typographic features supported in TTF fonts (supported features depend on font file)</li>
+    <li>lineHeight: number: the line height (default: 1)</li>
+    <li>bold: boolean: whether to use bold text (default: false)</li>
+    <li>italics: boolean: whether to use italic text (default: false)</li>
+    <li>alignment: string: (‘left’ or ‘center’ or ‘right’ or ‘justify’) the alignment of the text</li>
+    <li>characterSpacing: number: size of the letter spacing in pt</li>
+    <li>color: string: the color of the text (color name e.g., ‘blue’ or hexadecimal color e.g., ‘#ff5500’)</li>
+    <li>background: string the background color of the text</li>
+    <li>markerColor: string: the color of the bullets in a buletted list</li>
+    <li>decoration: string: the text decoration to apply (‘underline’ or ‘lineThrough’ or ‘overline’)</li>
+    <li>decorationStyle: string: the style of the text decoration (‘dashed’ or ‘dotted’ or ‘double’ or ‘wavy’)</li>
+    <li>decorationColor: string: the color of the text decoration, see color</li>
+    <li>sup: boolean: superscript text (default: false)</li>
+    <li>sub: boolean: subscript text (default: false)</li>
+    <li>opacity: boolean: text opacity (default: 1)</li>
+  </ul>
+
 ### An example of converting a JSON object to PDF
 
 ```jsx
@@ -71,15 +93,29 @@ function Component() {
   };
 
   const styles = {
-    image: {
-      width: 'auto',
-      height: 300,
+    projectTitle: {
+      fontSize: 24,
+      bold: true,
       alignment: 'center',
-      margin: [0, 16, 0, 16],
+    },
+    title: { fontSize: 24, bold: true, alignment: 'center', margin: [0, 250, 0, 0] },
+    intro: { fontSize: 14 },
+    image: {
+      alignment: 'center',
+      margin: [0, 10],
+    },
+    verseNumber: {
+      sup: true,
+      bold: true,
+      opacity: 0.8,
     },
     text: {
-      fontSize: 16,
-      margin: [0, 0, 0, 10],
+      alignment: 'justify',
+    },
+    back: { fontSize: 14, alignment: 'center' },
+    reference: {
+      margin: [0, 10, 0, 0],
+      italics: true,
     },
   };
 
@@ -105,10 +141,10 @@ function Component() {
       data,
       styles,
       fileName,
-      bookPropertiesObs,
       showImages,
       combineVerses,
       showVerseNumber,
+      bookPropertiesObs,
     })
       .then(() => console.log('PDF creation completed'))
       .catch((error) => console.error('PDF creation failed:', error))
