@@ -74,7 +74,7 @@ module.exports = {
   usageMode: 'expand',
   pagePerSection: true,
   getComponentPathLine(componentPath) {
-    const componentName = path.basename(componentPath, '.js');
+    const componentName = path.basename(componentPath, '.jsx');
     return `import { ${componentName} } from '${name}';`;
   },
   updateExample(props, exampleFilePath) {
