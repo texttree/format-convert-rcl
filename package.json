@@ -46,7 +46,6 @@
     "release:patch": "standard-version --release-as patch"
   },
   "peerDependencies": {
-    "prop-types": "^15.x",
     "react": "^17.x || ^18.x",
     "react-dom": "^17.x || ^18.x"
   },
