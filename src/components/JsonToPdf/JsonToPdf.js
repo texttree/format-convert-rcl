@@ -17,16 +17,18 @@ function JsonToPdf({
   const generatePdf = async () => {
     const docDefinition = {
       content: [],
-      styles: {
-        text: styles.text,
-        back: styles.back,
-        title: styles.title,
-        intro: styles.intro,
-        image: styles.image,
-        reference: styles.reference,
-        verseNumber: styles.verseNumber,
-        projectTitle: styles.projectTitle,
-      },
+      styles: styles
+        ? {
+            text: styles.text,
+            back: styles.back,
+            title: styles.title,
+            intro: styles.intro,
+            image: styles.image,
+            reference: styles.reference,
+            verseNumber: styles.verseNumber,
+            projectTitle: styles.projectTitle,
+          }
+        : {},
       pageBreakBefore: (currentNode) => {
         if (currentNode.style?.pageBreakBefore === 'always') {
           return true;
