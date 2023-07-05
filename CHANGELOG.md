@@ -2,6 +2,17 @@
 
 This repository is part of the open components ecosystem.
 
+## [0.3.0](https://github.com/texttree/obs-format-convert-rcl/compare/v0.1.2...v0.3.0) (2023-07-05)
+
+### Features
+
+- :sparkles: show/hide TitlePage ([4329c89](https://github.com/texttree/obs-format-convert-rcl/commit/4329c892f8c9009e6dce105087ffe08c66240e02))
+
+### Bug Fixes
+
+- :bug: if we don't pass styles to jsontopdf, the component broke, corrected ([3015b40](https://github.com/texttree/obs-format-convert-rcl/commit/3015b404e91bf7e70a6abe93954e9160fbf001a9))
+- :bug: line breaks fixed ([9b509d2](https://github.com/texttree/obs-format-convert-rcl/commit/9b509d20651c1cdf1408442bf01ee0c3678cfee7))
+
 ### 0.1.1 (2023-06-22)
 
 ### Features
