@@ -99,13 +99,13 @@ function Component() {
       bold: true,
       alignment: 'center',
     },
-    chapterTitle: { fontSize: 24, bold: true },
-    // chapterTitle: {
-    //   fontSize: 24,
-    //   bold: true,
-    //   alignment: 'center',
-    //   margin: [0, 250, 0, 0],
-    // },
+    // chapterTitle: { fontSize: 24, bold: true },
+    chapterTitle: {
+      fontSize: 24,
+      bold: true,
+      alignment: 'center',
+      margin: [0, 250, 0, 0],
+    },
     intro: { fontSize: 14 },
     image: {
       alignment: 'center',
@@ -183,7 +183,7 @@ function Component() {
         {showImages ? 'Hide Images' : 'Show Images'}
       </button>
       {!showImages && (
-        <button onClick={handleToggleCombineVerses}>
+        <button onClick={handleToggleCombineVerses} style={{ marginTop: '10px' }}>
           {combineVerses ? 'Split Verses' : 'Combine Verses'}
         </button>
       )}

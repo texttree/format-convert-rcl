@@ -30,12 +30,6 @@ function JsonToPdf({
             projectTitle: styles.projectTitle,
           }
         : {},
-      pageBreakBefore: (currentNode) => {
-        if (currentNode.style?.pageBreakBefore === 'always') {
-          return true;
-        }
-        return currentNode.pageBreak === 'before' || currentNode.pageBreak === 'left';
-      },
     };
 
     const getImageDataUrl = async (url) => {
@@ -61,21 +55,20 @@ function JsonToPdf({
 
       if (projectTitle && title) {
         docDefinition.content.push(
-          { text: projectTitle, style: 'projectTitle', pageBreakBefore: 'always' },
+          { text: projectTitle, style: 'projectTitle' },
           { text: '\n' },
-          { text: title, style: 'projectTitle', pageBreakBefore: 'always' }
+          { text: title, style: 'projectTitle', pageBreak: 'after' }
         );
       }
     };
 
     const addIntroPage = () => {
       if (bookPropertiesObs?.intro) {
-        docDefinition.content.push(
-          { text: '', pageBreak: 'before' },
-          { text: bookPropertiesObs.intro, style: 'intro', pageBreak: 'after' }
-        );
-      } else if (bookPropertiesObs?.projectTitle && bookPropertiesObs?.title) {
-        docDefinition.content.push({ text: '', pageBreak: 'before' });
+        docDefinition.content.push({
+          text: bookPropertiesObs.intro,
+          style: 'intro',
+          pageBreak: 'after',
+        });
       }
     };
 
@@ -156,16 +149,29 @@ function JsonToPdf({
         docDefinition.content.push({ text: formattedVerseContent, style: 'text' });
       }
 
-      docDefinition.content.push({
-        text: dataItem.reference,
-        style: 'reference',
-        pageBreak: 'after',
-      });
+      const isLastItem = data.indexOf(dataItem) === data.length - 1;
+
+      if (!isLastItem) {
+        docDefinition.content.push({
+          text: dataItem.reference,
+          style: 'reference',
+          pageBreak: 'after',
+        });
+      } else {
+        docDefinition.content.push({
+          text: dataItem.reference,
+          style: 'reference',
+        });
+      }
     };
 
     const addBackPage = () => {
       if (bookPropertiesObs?.back) {
-        docDefinition.content.push({ text: bookPropertiesObs.back, style: 'back' });
+        docDefinition.content.push({
+          text: bookPropertiesObs.back,
+          style: 'back',
+          pageBreak: 'before',
+        });
       }
     };
 
