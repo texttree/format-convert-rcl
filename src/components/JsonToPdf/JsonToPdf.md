@@ -31,6 +31,7 @@ function Component() {
   const [combineVerses, setCombineVerses] = useState(false);
   const [showVerseNumber, setShowVerseNumber] = useState(false);
   const [isCreatingPdf, setIsCreatingPdf] = useState(false);
+  const [showTitlePage, setShowTitlePage] = useState(true);
 
   const data = [
     {
@@ -98,7 +99,13 @@ function Component() {
       bold: true,
       alignment: 'center',
     },
-    title: { fontSize: 24, bold: true, alignment: 'center', margin: [0, 250, 0, 0] },
+    chapterTitle: { fontSize: 24, bold: true },
+    // chapterTitle: {
+    //   fontSize: 24,
+    //   bold: true,
+    //   alignment: 'center',
+    //   margin: [0, 250, 0, 0],
+    // },
     intro: { fontSize: 14 },
     image: {
       alignment: 'center',
@@ -134,15 +141,19 @@ function Component() {
     setShowVerseNumber((prevShowVerseNumber) => !prevShowVerseNumber);
   };
 
+  const handleToggleTitlePage = () => {
+    setShowTitlePage((prevShowTitlePage) => !prevShowTitlePage);
+  };
+
   const handleCreatePdf = () => {
     setIsCreatingPdf(true);
-
     JsonToPdf({
       data,
       styles,
       fileName,
       showImages,
       combineVerses,
+      showTitlePage,
       showVerseNumber,
       bookPropertiesObs,
     })
@@ -164,6 +175,9 @@ function Component() {
       </button>
       <button onClick={handleToggleVerseNumber} style={{ marginRight: '10px' }}>
         {showVerseNumber ? 'Hide Verse Number' : 'Show Verse Number'}
+      </button>
+      <button onClick={handleToggleTitlePage} style={{ marginRight: '10px' }}>
+        {showTitlePage ? 'Hide Title Page' : 'Show Title Page'}
       </button>
       <button onClick={handleToggleImages} style={{ marginRight: '10px' }}>
         {showImages ? 'Hide Images' : 'Show Images'}

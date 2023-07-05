@@ -9,6 +9,7 @@ function JsonToPdf({
   bookPropertiesObs,
   imageWidth = 500,
   showImages = true,
+  showTitlePage = true,
   fileName = 'file.pdf',
   combineVerses = false,
   showVerseNumber = false,
@@ -21,7 +22,7 @@ function JsonToPdf({
         ? {
             text: styles.text,
             back: styles.back,
-            title: styles.title,
+            chapterTitle: styles.chapterTitle,
             intro: styles.intro,
             image: styles.image,
             reference: styles.reference,
@@ -80,11 +81,16 @@ function JsonToPdf({
 
     const addDataToDocument = async (dataItem) => {
       if (dataItem.title) {
-        docDefinition.content.push({
+        const titleBlock = {
           text: dataItem.title,
-          pageBreak: 'after',
-          style: 'title',
-        });
+          style: 'chapterTitle',
+        };
+
+        if (showTitlePage) {
+          titleBlock.pageBreak = 'after';
+        }
+
+        docDefinition.content.push(titleBlock);
       }
 
       let verseContent = '';
