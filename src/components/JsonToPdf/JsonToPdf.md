@@ -99,7 +99,6 @@ function Component() {
       bold: true,
       alignment: 'center',
     },
-    // chapterTitle: { fontSize: 24, bold: true },
     chapterTitle: {
       fontSize: 24,
       bold: true,

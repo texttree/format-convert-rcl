@@ -8,6 +8,7 @@ export default function JsonToPdf() {
 JsonToPdf.defaultProps = {
   imageWidth: 500,
   showImages: true,
+  showTitlePage: true,
   fileName: 'file.pdf',
   combineVerses: false,
   showVerseNumber: false,
@@ -46,6 +47,8 @@ JsonToPdf.propTypes = {
   imageUrl: PropTypes.string,
   /** option that disables the display of images in PDF */
   showImages: PropTypes.bool,
+  /** option that displays the title of the chapter on a separate page */
+  showTitlePage: PropTypes.bool,
   /** option combines verses into one line */
   combineVerses: PropTypes.bool,
   /** parameter that determines whether verse numbers should be displayed when creating a PDF document */
