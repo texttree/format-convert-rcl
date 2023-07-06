@@ -85,23 +85,19 @@ function JsonToPdf({
     };
 
     const addDataToDocument = async (dataItem) => {
-      // console.log(bookPropertiesObs);
-      const { projectTitle, title, intro } = bookPropertiesObs || {};
+      const { projectTitle, title, intro, back } = bookPropertiesObs || {};
 
       let headerLeftText = 'OpenBibleStories';
       let headerRightText = dataItem.title || '';
 
-      docDefinition.header = function (currentPage) {
-        if (projectTitle && title && currentPage === 1) {
-          return null;
-        } else if (intro && currentPage === 1) {
-          return null;
-        } else if (
-          projectTitle &&
-          title &&
-          intro &&
-          (currentPage === 1 || currentPage === 2)
+      docDefinition.header = function (currentPage, totalPages) {
+        if (
+          (projectTitle && title && currentPage === 1) ||
+          (intro && currentPage === 1) ||
+          (projectTitle && title && intro && (currentPage === 1 || currentPage === 2))
         ) {
+          return null;
+        } else if (back && currentPage === totalPages) {
           return null;
         }
 
@@ -130,19 +126,17 @@ function JsonToPdf({
         ];
       };
 
-      docDefinition.footer = function (currentPage) {
-        if (projectTitle && title && currentPage === 1) {
-          return null;
-        } else if (intro && currentPage === 1) {
-          return null;
-        } else if (
-          projectTitle &&
-          title &&
-          intro &&
-          (currentPage === 1 || currentPage === 2)
+      docDefinition.footer = function (currentPage, totalPages) {
+        if (
+          (projectTitle && title && currentPage === 1) ||
+          (intro && currentPage === 1) ||
+          (projectTitle && title && intro && (currentPage === 1 || currentPage === 2))
         ) {
           return null;
+        } else if (back && currentPage === totalPages) {
+          return null;
         }
+
         return [
           {
             canvas: [
