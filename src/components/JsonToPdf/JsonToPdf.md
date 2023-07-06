@@ -95,20 +95,15 @@ function Component() {
 
   const styles = {
     projectTitle: {
+      font: 'Times',
       fontSize: 24,
       bold: true,
       alignment: 'center',
     },
-    chapterTitle: {
-      fontSize: 24,
-      bold: true,
-      alignment: 'center',
-      margin: [0, 250, 0, 0],
-    },
-    intro: { fontSize: 14 },
+    chapterTitle: { fontSize: 20, bold: true, margin: [0, 26, 0, 15] },
     image: {
       alignment: 'center',
-      margin: [0, 10],
+      margin: [0, 15],
     },
     verseNumber: {
       sup: true,
@@ -118,7 +113,7 @@ function Component() {
     text: {
       alignment: 'justify',
     },
-    back: { fontSize: 14, alignment: 'center' },
+    back: { alignment: 'center' },
     reference: {
       margin: [0, 10, 0, 0],
       italics: true,
@@ -140,9 +135,9 @@ function Component() {
     setShowVerseNumber((prevShowVerseNumber) => !prevShowVerseNumber);
   };
 
-  const handleToggleTitlePage = () => {
-    setShowTitlePage((prevShowTitlePage) => !prevShowTitlePage);
-  };
+  // const handleToggleTitlePage = () => {
+  //   setShowTitlePage((prevShowTitlePage) => !prevShowTitlePage);
+  // };
 
   const handleCreatePdf = () => {
     setIsCreatingPdf(true);
@@ -152,7 +147,7 @@ function Component() {
       fileName,
       showImages,
       combineVerses,
-      showTitlePage,
+      showTitlePage: false,
       showVerseNumber,
       bookPropertiesObs,
     })
@@ -162,6 +157,10 @@ function Component() {
         setIsCreatingPdf(false);
       });
   };
+
+  // <button onClick={handleToggleTitlePage} style={{ marginRight: '10px' }}>
+  // {showTitlePage ? 'Hide Title Page' : 'Show Title Page'}
+  // </button>
 
   return (
     <div>
@@ -175,9 +174,7 @@ function Component() {
       <button onClick={handleToggleVerseNumber} style={{ marginRight: '10px' }}>
         {showVerseNumber ? 'Hide Verse Number' : 'Show Verse Number'}
       </button>
-      <button onClick={handleToggleTitlePage} style={{ marginRight: '10px' }}>
-        {showTitlePage ? 'Hide Title Page' : 'Show Title Page'}
-      </button>
+
       <button onClick={handleToggleImages} style={{ marginRight: '10px' }}>
         {showImages ? 'Hide Images' : 'Show Images'}
       </button>

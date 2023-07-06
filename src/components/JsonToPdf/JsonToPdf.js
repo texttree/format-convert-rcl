@@ -2,12 +2,19 @@ import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
 
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
-
+pdfMake.fonts = {
+  Times: {
+    normal: 'times new roman.ttf',
+    bold: 'times new roman bold.ttf',
+    italics: 'times new roman italic.ttf',
+    bolditalics: 'times new roman bold italic.ttf',
+  },
+};
 function JsonToPdf({
   data,
   styles,
   bookPropertiesObs,
-  imageWidth = 500,
+  imageWidth = 523,
   showImages = true,
   showTitlePage = true,
   fileName = 'file.pdf',
@@ -18,6 +25,11 @@ function JsonToPdf({
   const generatePdf = async () => {
     const docDefinition = {
       content: [],
+      defaultStyle: {
+        font: 'Times',
+        fontSize: 14,
+      },
+      pageMargins: [36, 60],
       styles: styles
         ? {
             text: styles.text,
@@ -73,6 +85,88 @@ function JsonToPdf({
     };
 
     const addDataToDocument = async (dataItem) => {
+      // console.log(bookPropertiesObs);
+      const { projectTitle, title, intro } = bookPropertiesObs || {};
+
+      let headerLeftText = 'OpenBibleStories';
+      let headerRightText = dataItem.title || '';
+
+      docDefinition.header = function (currentPage) {
+        if (projectTitle && title && currentPage === 1) {
+          return null;
+        } else if (intro && currentPage === 1) {
+          return null;
+        } else if (
+          projectTitle &&
+          title &&
+          intro &&
+          (currentPage === 1 || currentPage === 2)
+        ) {
+          return null;
+        }
+
+        return [
+          {
+            columns: [
+              { text: headerLeftText, bold: true, alignment: 'left', width: '50%' },
+              { text: headerRightText, bold: true, alignment: 'right', width: '50%' },
+            ],
+            margin: [36, 30, 36, 10],
+          },
+          {
+            canvas: [
+              {
+                type: 'line',
+                x1: 36,
+                y1: 0,
+                x2: 559,
+                y2: 0,
+                lineWidth: 1,
+                lineColor: '#000000',
+                margin: [0, 0, 4, 0],
+              },
+            ],
+          },
+        ];
+      };
+
+      docDefinition.footer = function (currentPage) {
+        if (projectTitle && title && currentPage === 1) {
+          return null;
+        } else if (intro && currentPage === 1) {
+          return null;
+        } else if (
+          projectTitle &&
+          title &&
+          intro &&
+          (currentPage === 1 || currentPage === 2)
+        ) {
+          return null;
+        }
+        return [
+          {
+            canvas: [
+              {
+                type: 'line',
+                x1: 36,
+                y1: 0,
+                x2: 559,
+                y2: 0,
+                lineWidth: 1,
+                lineColor: '#000000',
+              },
+            ],
+          },
+          {
+            text: currentPage,
+            fontSize: 16,
+            alignment: 'center',
+            bold: true,
+            margin: [0, 10, 0, 0],
+          },
+        ];
+      };
+
       if (dataItem.title) {
         const titleBlock = {
           text: dataItem.title,
@@ -176,6 +270,7 @@ function JsonToPdf({
     };
 
     const generateAndDownloadPdf = () => {
+      console.log(docDefinition);
       pdfMake.createPdf(docDefinition).download(fileName);
     };
 
