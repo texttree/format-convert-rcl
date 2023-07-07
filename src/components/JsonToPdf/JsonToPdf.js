@@ -2,14 +2,7 @@ import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
 
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
-pdfMake.fonts = {
-  Times: {
-    normal: 'times new roman.ttf',
-    bold: 'times new roman bold.ttf',
-    italics: 'times new roman italic.ttf',
-    bolditalics: 'times new roman bold italic.ttf',
-  },
-};
+
 function JsonToPdf({
   data,
   styles,
@@ -26,7 +19,6 @@ function JsonToPdf({
     const docDefinition = {
       content: [],
       defaultStyle: {
-        font: 'Times',
         fontSize: 14,
       },
       pageMargins: [36, 60],
@@ -40,6 +32,9 @@ function JsonToPdf({
             reference: styles.reference,
             verseNumber: styles.verseNumber,
             projectTitle: styles.projectTitle,
+            bookTitle: styles.bookTitle,
+            projectLanguage: styles.projectLanguage,
+            copyright: styles.copyright,
           }
         : {},
     };
@@ -67,9 +62,40 @@ function JsonToPdf({
 
       if (projectTitle && title) {
         docDefinition.content.push(
+          { text: '\n', margin: [0, 100] },
+          {
+            canvas: [
+              {
+                type: 'line',
+                x1: 73,
+                y1: 0,
+                x2: 450,
+                y2: 0,
+                lineWidth: 1,
+                lineColor: '#000000',
+              },
+            ],
+          },
           { text: projectTitle, style: 'projectTitle' },
-          { text: '\n' },
-          { text: title, style: 'projectTitle', pageBreak: 'after' }
+          { text: title, style: 'bookTitle' },
+          {
+            canvas: [
+              {
+                type: 'line',
+                x1: 73,
+                y1: 0,
+                x2: 450,
+                y2: 0,
+                lineWidth: 1,
+                lineColor: '#000000',
+              },
+            ],
+          },
+          {
+            text: 'projectLanguage',
+            style: 'projectLanguage',
+            pageBreak: 'after',
+          }
         );
       }
     };
@@ -85,7 +111,7 @@ function JsonToPdf({
     };
 
     const addDataToDocument = async (dataItem) => {
-      const { projectTitle, title, intro, back } = bookPropertiesObs || {};
+      const { projectTitle, title, intro, back, copyright } = bookPropertiesObs || {};
 
       let headerLeftText = 'OpenBibleStories';
       let headerRightText = dataItem.title || '';
@@ -119,7 +145,6 @@ function JsonToPdf({
                 y2: 0,
                 lineWidth: 1,
                 lineColor: '#000000',
-                margin: [0, 0, 4, 0],
               },
             ],
           },
@@ -132,7 +157,16 @@ function JsonToPdf({
           (intro && currentPage === 1) ||
           (projectTitle && title && intro && (currentPage === 1 || currentPage === 2))
         ) {
-          return null;
+          if (copyright) {
+            return [
+              {
+                text: copyright,
+                style: 'copyright',
+              },
+            ];
+          } else {
+            return null;
+          }
         } else if (back && currentPage === totalPages) {
           return null;
         }

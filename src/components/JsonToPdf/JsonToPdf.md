@@ -87,19 +87,28 @@ function Component() {
   ];
 
   const bookPropertiesObs = {
-    projectTitle: 'Project Title',
-    title: 'Book Title',
     intro: 'Introduction goes here',
+    projectTitle: 'Project Title',
+    copyright: 'unfoldingWord®',
+    title: 'Book Title',
     back: 'Endpaper',
   };
 
   const styles = {
     projectTitle: {
-      font: 'Times',
-      fontSize: 24,
-      bold: true,
       alignment: 'center',
+      fontSize: 32,
+      bold: true,
+      margin: [0, 20],
     },
+    bookTitle: {
+      alignment: 'center',
+      fontSize: 20,
+      bold: true,
+      margin: [0, 0, 0, 20],
+    },
+    projectLanguage: { alignment: 'center', bold: true, margin: [0, 15, 0, 0] },
+    copyright: { alignment: 'center', margin: [0, 10, 0, 0] },
     chapterTitle: { fontSize: 20, bold: true, margin: [0, 26, 0, 15] },
     image: {
       alignment: 'center',
@@ -115,8 +124,8 @@ function Component() {
     },
     back: { alignment: 'center' },
     reference: {
-      margin: [0, 10, 0, 0],
       italics: true,
+      margin: [0, 10, 0, 0],
     },
   };
 
