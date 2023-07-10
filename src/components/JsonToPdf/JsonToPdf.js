@@ -15,7 +15,11 @@ function JsonToPdf({
   showVerseNumber = false,
   imageUrl = 'https://cdn.door43.org/obs/jpg/360px/',
 }) {
+  const { projectTitle, title, intro, back, copyright } = bookPropertiesObs || {};
+
   const generatePdf = async () => {
+    const pageHeaders = {};
+
     const docDefinition = {
       content: [],
       defaultStyle: {
@@ -110,166 +114,74 @@ function JsonToPdf({
       }
     };
 
-    const chapterNameArr = data.map((obj) => obj.title);
-
-    // console.log('docDefinition:', docDefinition.content);
-
     const generateHeader = (docDefinition) => {
-      let startPage = 0;
-      let endPage = 0;
-      let header = '';
-      const pageHeaders = {};
+      let headerLeftText = title;
+      let startCurrentChapterPage = 0;
+      let endCurrentChapterPage = 0;
+      let currentChapterTitle = '';
 
       for (let i = 0; i < docDefinition.content.length; i++) {
-        if (docDefinition.content[i]?.style === 'chapterTitle') {
-          if (startPage === 0) {
-            startPage = docDefinition.content[i].positions[0].pageNumber;
-            header = docDefinition.content[i].text;
+        const contentItem = docDefinition.content[i];
+
+        if (contentItem?.style === 'chapterTitle') {
+          if (startCurrentChapterPage === 0) {
+            startCurrentChapterPage = contentItem.positions[0].pageNumber;
+            currentChapterTitle = contentItem.text;
             continue;
           }
-          endPage = docDefinition.content[i].positions[0].pageNumber;
 
-          for (let page = startPage; page < endPage; page++) {
-            pageHeaders[page] = [
-              {
-                columns: [
-                  { text: 'headerLeftText', bold: true, alignment: 'left', width: '50%' },
-                  {
-                    text: header,
-                    bold: true,
-                    alignment: 'right',
-                    width: '50%',
-                  },
-                ],
-                margin: [36, 30, 36, 10],
-              },
-              {
-                canvas: [
-                  {
-                    type: 'line',
-                    x1: 36,
-                    y1: 0,
-                    x2: 559,
-                    y2: 0,
-                    lineWidth: 1,
-                    lineColor: '#000000',
-                  },
-                ],
-              },
-            ];
+          endCurrentChapterPage = contentItem.positions[0].pageNumber;
+
+          for (let page = startCurrentChapterPage; page < endCurrentChapterPage; page++) {
+            pageHeaders[page] = createHeader(headerLeftText, currentChapterTitle);
           }
-          header = docDefinition.content[i].text;
-          startPage = endPage;
+
+          currentChapterTitle = contentItem.text;
+          startCurrentChapterPage = endCurrentChapterPage;
         }
-        if (docDefinition.content[i]?.style === 'back') {
-          if (startPage === 0) {
-            continue;
-          }
-          endPage = docDefinition.content[i].positions[0].pageNumber;
 
-          for (let page = startPage; page < endPage; page++) {
-            pageHeaders[page] = [
-              {
-                columns: [
-                  { text: 'headerLeftText', bold: true, alignment: 'left', width: '50%' },
-                  {
-                    text: header,
-                    bold: true,
-                    alignment: 'right',
-                    width: '50%',
-                  },
-                ],
-                margin: [36, 30, 36, 10],
-              },
-              {
-                canvas: [
-                  {
-                    type: 'line',
-                    x1: 36,
-                    y1: 0,
-                    x2: 559,
-                    y2: 0,
-                    lineWidth: 1,
-                    lineColor: '#000000',
-                  },
-                ],
-              },
-            ];
+        if (contentItem?.style === 'back' && startCurrentChapterPage !== 0) {
+          endCurrentChapterPage = contentItem.positions[0].pageNumber;
+
+          for (let page = startCurrentChapterPage; page < endCurrentChapterPage; page++) {
+            pageHeaders[page] = createHeader(headerLeftText, currentChapterTitle);
           }
-          header = '';
-          startPage = endPage;
+
+          currentChapterTitle = '';
+          startCurrentChapterPage = endCurrentChapterPage;
         }
-        // const contentItem = docDefinition.content[i];
-
-        // if (contentItem.text && chapterNameArr.includes(contentItem.text)) {
-        //   const pageNumber = contentItem?.positions[0].pageNumber;
-        //   if (currentPage === pageNumber) {
-        //     currentChapterName = contentItem.text;
-        //     return [
-        //       {
-        //         columns: [
-        //           { text: headerLeftText, bold: true, alignment: 'left', width: '50%' },
-        //           {
-        //             text: currentChapterName,
-        //             bold: true,
-        //             alignment: 'right',
-        //             width: '50%',
-        //           },
-        //         ],
-        //         margin: [36, 30, 36, 10],
-        //       },
-        //       {
-        //         canvas: [
-        //           {
-        //             type: 'line',
-        //             x1: 36,
-        //             y1: 0,
-        //             x2: 559,
-        //             y2: 0,
-        //             lineWidth: 1,
-        //             lineColor: '#000000',
-        //           },
-        //         ],
-        //       },
-        //     ];
-        //   } else if (currentPage > pageNumber && currentChapterName) {
-        //     // } else if (currentChapterName) {
-        //     // console.log('currentPage:', currentPage);
-        //     // console.log('pageNumber:', pageNumber);
-        //     // console.log('currentChapterName:', currentChapterName);
-        //   }
-        // }
       }
+
       return pageHeaders;
     };
 
-    const addDataToDocument = async (dataItem) => {
-      const { projectTitle, title, intro, back, copyright } = bookPropertiesObs || {};
-      let headerLeftText = title;
-      let currentChapterName = null;
+    const createHeader = (leftText, rightText) => {
+      return [
+        {
+          columns: [
+            { text: leftText, bold: true, alignment: 'left', width: '50%' },
+            { text: rightText, bold: true, alignment: 'right', width: '50%' },
+          ],
+          margin: [36, 30, 36, 10],
+        },
+        {
+          canvas: [
+            {
+              type: 'line',
+              x1: 36,
+              y1: 0,
+              x2: 559,
+              y2: 0,
+              lineWidth: 1,
+              lineColor: '#000000',
+            },
+          ],
+        },
+      ];
+    };
 
-      // console.log(docDefinition.content);
-
-      docDefinition.footer = function (currentPage, totalPages) {
-        if (
-          (projectTitle && title && currentPage === 1) ||
-          (intro && currentPage === 1) ||
-          (projectTitle && title && intro && (currentPage === 1 || currentPage === 2))
-        ) {
-          if (copyright) {
-            return [
-              {
-                text: copyright,
-                style: 'copyright',
-              },
-            ];
-          } else {
-            return null;
-          }
-        } else if (back && currentPage === totalPages) {
-          return null;
-        }
-
+    const createFooter = (currentPage) => {
+      if (currentPage in pageHeaders) {
         return [
           {
             canvas: [
@@ -292,7 +204,31 @@ function JsonToPdf({
             margin: [0, 10, 0, 0],
           },
         ];
-      };
+      }
+      return null;
+    };
+
+    const addDataToDocument = async (dataItem) => {
+      // docDefinition.footer = function (currentPage, totalPages) {
+      //   if (
+      //     (projectTitle && title && currentPage === 1) ||
+      //     (intro && currentPage === 1) ||
+      //     (projectTitle && title && intro && (currentPage === 1 || currentPage === 2))
+      //   ) {
+      //     if (copyright) {
+      //       return [
+      //         {
+      //           text: copyright,
+      //           style: 'copyright',
+      //         },
+      //       ];
+      //     } else {
+      //       return null;
+      //     }
+      //   } else if (back && currentPage === totalPages) {
+      //     return null;
+      //   }
+      // };
 
       if (dataItem.title) {
         const titleBlock = {
@@ -409,15 +345,15 @@ function JsonToPdf({
       }
 
       addBackPage();
-      //TODO прописать хэдеры
+
       docDefinition.header = function (currentPage, totalPages) {
-        if (true && currentPage === totalPages) {
+        if (back && currentPage === totalPages) {
           return null;
         }
         return generateHeader(docDefinition)[currentPage];
       };
 
-      //TODO прописать футеры
+      docDefinition.footer = createFooter;
 
       generateAndDownloadPdf();
     } catch (error) {
