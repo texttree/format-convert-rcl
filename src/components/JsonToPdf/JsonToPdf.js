@@ -110,45 +110,61 @@ function JsonToPdf({
       }
     };
 
+    const chapterNameArr = data.map((obj) => obj.title);
+    console.log('docDefinition:', docDefinition);
+
     const addDataToDocument = async (dataItem) => {
       const { projectTitle, title, intro, back, copyright } = bookPropertiesObs || {};
-
-      let headerLeftText = 'OpenBibleStories';
-      let headerRightText = dataItem.title || '';
+      let headerLeftText = title;
+      let currentChapterName = null;
 
       docDefinition.header = function (currentPage, totalPages) {
-        if (
-          (projectTitle && title && currentPage === 1) ||
-          (intro && currentPage === 1) ||
-          (projectTitle && title && intro && (currentPage === 1 || currentPage === 2))
-        ) {
-          return null;
-        } else if (back && currentPage === totalPages) {
+        if (back && currentPage === totalPages) {
           return null;
         }
 
-        return [
-          {
-            columns: [
-              { text: headerLeftText, bold: true, alignment: 'left', width: '50%' },
-              { text: headerRightText, bold: true, alignment: 'right', width: '50%' },
-            ],
-            margin: [36, 30, 36, 10],
-          },
-          {
-            canvas: [
-              {
-                type: 'line',
-                x1: 36,
-                y1: 0,
-                x2: 559,
-                y2: 0,
-                lineWidth: 1,
-                lineColor: '#000000',
-              },
-            ],
-          },
-        ];
+        for (let i = 0; i < docDefinition.content.length; i++) {
+          const contentItem = docDefinition.content[i];
+          if (contentItem.text && chapterNameArr.includes(contentItem.text)) {
+            const pageNumber = contentItem.positions[0].pageNumber;
+            if (currentPage === pageNumber) {
+              currentChapterName = contentItem.text;
+              return [
+                {
+                  columns: [
+                    { text: headerLeftText, bold: true, alignment: 'left', width: '50%' },
+                    {
+                      text: currentChapterName,
+                      bold: true,
+                      alignment: 'right',
+                      width: '50%',
+                    },
+                  ],
+                  margin: [36, 30, 36, 10],
+                },
+                {
+                  canvas: [
+                    {
+                      type: 'line',
+                      x1: 36,
+                      y1: 0,
+                      x2: 559,
+                      y2: 0,
+                      lineWidth: 1,
+                      lineColor: '#000000',
+                    },
+                  ],
+                },
+              ];
+            } else if (currentPage > pageNumber && currentChapterName) {
+              // } else if (currentChapterName) {
+              console.log('currentPage:', currentPage);
+              console.log('pageNumber:', pageNumber);
+              console.log('currentChapterName:', currentChapterName);
+            }
+          }
+        }
+        return null;
       };
 
       docDefinition.footer = function (currentPage, totalPages) {
@@ -298,7 +314,6 @@ function JsonToPdf({
     };
 
     const generateAndDownloadPdf = () => {
-      console.log(docDefinition);
       pdfMake.createPdf(docDefinition).download(fileName);
     };
 

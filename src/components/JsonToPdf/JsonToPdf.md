@@ -87,10 +87,10 @@ function Component() {
   ];
 
   const bookPropertiesObs = {
-    intro: 'Introduction goes here',
-    projectTitle: 'Project Title',
+    intro: 'Introduction goes here...',
+    projectTitle: 'Открытые Библейские Истории',
     copyright: 'unfoldingWord®',
-    title: 'Book Title',
+    title: 'Open Bible Stories',
     back: 'Endpaper',
   };
 
@@ -99,15 +99,15 @@ function Component() {
       alignment: 'center',
       fontSize: 32,
       bold: true,
-      margin: [0, 20],
+      margin: [73, 20],
     },
     bookTitle: {
       alignment: 'center',
       fontSize: 20,
       bold: true,
-      margin: [0, 0, 0, 20],
+      margin: [73, 0, 73, 20],
     },
-    projectLanguage: { alignment: 'center', bold: true, margin: [0, 15, 0, 0] },
+    projectLanguage: { alignment: 'center', bold: true, margin: [73, 15, 73, 0] },
     copyright: { alignment: 'center', margin: [0, 10, 0, 0] },
     chapterTitle: { fontSize: 20, bold: true, margin: [0, 26, 0, 15] },
     image: {
