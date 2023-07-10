@@ -111,61 +111,144 @@ function JsonToPdf({
     };
 
     const chapterNameArr = data.map((obj) => obj.title);
-    console.log('docDefinition:', docDefinition);
+
+    // console.log('docDefinition:', docDefinition.content);
+
+    const generateHeader = (docDefinition) => {
+      let startPage = 0;
+      let endPage = 0;
+      let header = '';
+      const pageHeaders = {};
+
+      for (let i = 0; i < docDefinition.content.length; i++) {
+        if (docDefinition.content[i]?.style === 'chapterTitle') {
+          if (startPage === 0) {
+            startPage = docDefinition.content[i].positions[0].pageNumber;
+            header = docDefinition.content[i].text;
+            continue;
+          }
+          endPage = docDefinition.content[i].positions[0].pageNumber;
+
+          for (let page = startPage; page < endPage; page++) {
+            pageHeaders[page] = [
+              {
+                columns: [
+                  { text: 'headerLeftText', bold: true, alignment: 'left', width: '50%' },
+                  {
+                    text: header,
+                    bold: true,
+                    alignment: 'right',
+                    width: '50%',
+                  },
+                ],
+                margin: [36, 30, 36, 10],
+              },
+              {
+                canvas: [
+                  {
+                    type: 'line',
+                    x1: 36,
+                    y1: 0,
+                    x2: 559,
+                    y2: 0,
+                    lineWidth: 1,
+                    lineColor: '#000000',
+                  },
+                ],
+              },
+            ];
+          }
+          header = docDefinition.content[i].text;
+          startPage = endPage;
+        }
+        if (docDefinition.content[i]?.style === 'back') {
+          if (startPage === 0) {
+            continue;
+          }
+          endPage = docDefinition.content[i].positions[0].pageNumber;
+
+          for (let page = startPage; page < endPage; page++) {
+            pageHeaders[page] = [
+              {
+                columns: [
+                  { text: 'headerLeftText', bold: true, alignment: 'left', width: '50%' },
+                  {
+                    text: header,
+                    bold: true,
+                    alignment: 'right',
+                    width: '50%',
+                  },
+                ],
+                margin: [36, 30, 36, 10],
+              },
+              {
+                canvas: [
+                  {
+                    type: 'line',
+                    x1: 36,
+                    y1: 0,
+                    x2: 559,
+                    y2: 0,
+                    lineWidth: 1,
+                    lineColor: '#000000',
+                  },
+                ],
+              },
+            ];
+          }
+          header = '';
+          startPage = endPage;
+        }
+        // const contentItem = docDefinition.content[i];
+
+        // if (contentItem.text && chapterNameArr.includes(contentItem.text)) {
+        //   const pageNumber = contentItem?.positions[0].pageNumber;
+        //   if (currentPage === pageNumber) {
+        //     currentChapterName = contentItem.text;
+        //     return [
+        //       {
+        //         columns: [
+        //           { text: headerLeftText, bold: true, alignment: 'left', width: '50%' },
+        //           {
+        //             text: currentChapterName,
+        //             bold: true,
+        //             alignment: 'right',
+        //             width: '50%',
+        //           },
+        //         ],
+        //         margin: [36, 30, 36, 10],
+        //       },
+        //       {
+        //         canvas: [
+        //           {
+        //             type: 'line',
+        //             x1: 36,
+        //             y1: 0,
+        //             x2: 559,
+        //             y2: 0,
+        //             lineWidth: 1,
+        //             lineColor: '#000000',
+        //           },
+        //         ],
+        //       },
+        //     ];
+        //   } else if (currentPage > pageNumber && currentChapterName) {
+        //     // } else if (currentChapterName) {
+        //     // console.log('currentPage:', currentPage);
+        //     // console.log('pageNumber:', pageNumber);
+        //     // console.log('currentChapterName:', currentChapterName);
+        //   }
+        // }
+      }
+      return pageHeaders;
+    };
 
     const addDataToDocument = async (dataItem) => {
       const { projectTitle, title, intro, back, copyright } = bookPropertiesObs || {};
       let headerLeftText = title;
       let currentChapterName = null;
 
-      docDefinition.header = function (currentPage, totalPages) {
-        if (back && currentPage === totalPages) {
-          return null;
-        }
-
-        for (let i = 0; i < docDefinition.content.length; i++) {
-          const contentItem = docDefinition.content[i];
-          if (contentItem.text && chapterNameArr.includes(contentItem.text)) {
-            const pageNumber = contentItem.positions[0].pageNumber;
-            if (currentPage === pageNumber) {
-              currentChapterName = contentItem.text;
-              return [
-                {
-                  columns: [
-                    { text: headerLeftText, bold: true, alignment: 'left', width: '50%' },
-                    {
-                      text: currentChapterName,
-                      bold: true,
-                      alignment: 'right',
-                      width: '50%',
-                    },
-                  ],
-                  margin: [36, 30, 36, 10],
-                },
-                {
-                  canvas: [
-                    {
-                      type: 'line',
-                      x1: 36,
-                      y1: 0,
-                      x2: 559,
-                      y2: 0,
-                      lineWidth: 1,
-                      lineColor: '#000000',
-                    },
-                  ],
-                },
-              ];
-            } else if (currentPage > pageNumber && currentChapterName) {
-              // } else if (currentChapterName) {
-              console.log('currentPage:', currentPage);
-              console.log('pageNumber:', pageNumber);
-              console.log('currentChapterName:', currentChapterName);
-            }
-          }
-        }
-        return null;
-      };
+      // console.log(docDefinition.content);
 
       docDefinition.footer = function (currentPage, totalPages) {
         if (
@@ -326,6 +409,16 @@ function JsonToPdf({
       }
 
       addBackPage();
+      //TODO прописать хэдеры
+      docDefinition.header = function (currentPage, totalPages) {
+        if (true && currentPage === totalPages) {
+          return null;
+        }
+        return generateHeader(docDefinition)[currentPage];
+      };
+
+      //TODO прописать футеры
+
       generateAndDownloadPdf();
     } catch (error) {
       console.error('Error rendering PDF:', error);
