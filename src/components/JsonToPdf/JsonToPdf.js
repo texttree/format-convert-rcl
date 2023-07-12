@@ -39,6 +39,7 @@ function JsonToPdf({
             bookTitle: styles.bookTitle,
             projectLanguage: styles.projectLanguage,
             copyright: styles.copyright,
+            tableOfContentsTitle: styles.tableOfContentsTitle,
           }
         : {},
     };
@@ -62,8 +63,6 @@ function JsonToPdf({
     };
 
     const addTitlePage = () => {
-      const { projectTitle, title } = bookPropertiesObs || {};
-
       if (projectTitle && title) {
         docDefinition.content.push(
           { text: '\n', margin: [0, 100] },
@@ -102,6 +101,20 @@ function JsonToPdf({
           }
         );
       }
+    };
+
+    const addTableOfContentsPage = () => {
+      docDefinition.content.push([
+        {
+          toc: {
+            title: { text: 'Table Of Contents', style: 'tableOfContentsTitle' },
+          },
+        },
+        {
+          text: '\n',
+          pageBreak: 'after',
+        },
+      ]);
     };
 
     const addIntroPage = () => {
@@ -153,21 +166,19 @@ function JsonToPdf({
       }
       return pageHeaders;
     };
-
-    const generateFooter = (docDefinition, totalPages) => {
+    const generateFooter = (docDefinition) => {
       const pageFooters = {};
-      const lastPageNumber = totalPages;
 
       for (let i = 0; i < docDefinition.content.length; i++) {
         const contentItem = docDefinition.content[i];
 
+        if (contentItem?.style === 'intro' || contentItem?.style === 'back') {
+          continue;
+        }
+
         pageFooters[contentItem.positions[0].pageNumber] = createFooter(
           contentItem.positions[0].pageNumber
         );
-      }
-
-      if (!pageFooters[lastPageNumber]) {
-        pageFooters[lastPageNumber] = createFooter(parseInt(lastPageNumber));
       }
 
       return pageFooters;
@@ -228,6 +239,7 @@ function JsonToPdf({
         const titleBlock = {
           text: dataItem.title,
           style: 'chapterTitle',
+          tocItem: true,
         };
 
         if (showTitlePage) {
@@ -332,6 +344,7 @@ function JsonToPdf({
 
     addTitlePage();
     addIntroPage();
+    addTableOfContentsPage();
 
     try {
       for (const dataItem of data) {
@@ -348,8 +361,7 @@ function JsonToPdf({
         return generateHeader(docDefinition)[currentPage];
       };
 
-      docDefinition.footer = function (currentPage, totalPages) {
-        // добавить в условие страницу с оглавлением (tableOfContents && currentPage === 1-...)
+      docDefinition.footer = function (currentPage) {
         if (projectTitle && title && currentPage === 1) {
           return [
             {
@@ -359,7 +371,7 @@ function JsonToPdf({
           ];
         }
 
-        return generateFooter(docDefinition, currentPage, totalPages)[currentPage];
+        return generateFooter(docDefinition)[currentPage];
       };
 
       generateAndDownloadPdf();
