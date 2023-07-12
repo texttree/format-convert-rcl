@@ -15,7 +15,7 @@ function JsonToPdf({
   showVerseNumber = false,
   imageUrl = 'https://cdn.door43.org/obs/jpg/360px/',
 }) {
-  const { projectTitle, title, intro, back, copyright } = bookPropertiesObs || {};
+  const { projectTitle, title, back, copyright } = bookPropertiesObs || {};
 
   const generatePdf = async () => {
     const pageHeaders = {};
@@ -151,8 +151,26 @@ function JsonToPdf({
           startCurrentChapterPage = endCurrentChapterPage;
         }
       }
-
       return pageHeaders;
+    };
+
+    const generateFooter = (docDefinition, totalPages) => {
+      const pageFooters = {};
+      const lastPageNumber = totalPages;
+
+      for (let i = 0; i < docDefinition.content.length; i++) {
+        const contentItem = docDefinition.content[i];
+
+        pageFooters[contentItem.positions[0].pageNumber] = createFooter(
+          contentItem.positions[0].pageNumber
+        );
+      }
+
+      if (!pageFooters[lastPageNumber]) {
+        pageFooters[lastPageNumber] = createFooter(parseInt(lastPageNumber));
+      }
+
+      return pageFooters;
     };
 
     const createHeader = (leftText, rightText) => {
@@ -181,55 +199,31 @@ function JsonToPdf({
     };
 
     const createFooter = (currentPage) => {
-      if (currentPage in pageHeaders) {
-        return [
-          {
-            canvas: [
-              {
-                type: 'line',
-                x1: 36,
-                y1: 0,
-                x2: 559,
-                y2: 0,
-                lineWidth: 1,
-                lineColor: '#000000',
-              },
-            ],
-          },
-          {
-            text: currentPage,
-            fontSize: 16,
-            alignment: 'center',
-            bold: true,
-            margin: [0, 10, 0, 0],
-          },
-        ];
-      }
-      return null;
+      return [
+        {
+          canvas: [
+            {
+              type: 'line',
+              x1: 36,
+              y1: 0,
+              x2: 559,
+              y2: 0,
+              lineWidth: 1,
+              lineColor: '#000000',
+            },
+          ],
+        },
+        {
+          text: currentPage,
+          fontSize: 16,
+          alignment: 'center',
+          bold: true,
+          margin: [0, 10, 0, 0],
+        },
+      ];
     };
 
     const addDataToDocument = async (dataItem) => {
-      // docDefinition.footer = function (currentPage, totalPages) {
-      //   if (
-      //     (projectTitle && title && currentPage === 1) ||
-      //     (intro && currentPage === 1) ||
-      //     (projectTitle && title && intro && (currentPage === 1 || currentPage === 2))
-      //   ) {
-      //     if (copyright) {
-      //       return [
-      //         {
-      //           text: copyright,
-      //           style: 'copyright',
-      //         },
-      //       ];
-      //     } else {
-      //       return null;
-      //     }
-      //   } else if (back && currentPage === totalPages) {
-      //     return null;
-      //   }
-      // };
-
       if (dataItem.title) {
         const titleBlock = {
           text: dataItem.title,
@@ -350,10 +344,23 @@ function JsonToPdf({
         if (back && currentPage === totalPages) {
           return null;
         }
+
         return generateHeader(docDefinition)[currentPage];
       };
 
-      docDefinition.footer = createFooter;
+      docDefinition.footer = function (currentPage, totalPages) {
+        // добавить в условие страницу с оглавлением (tableOfContents && currentPage === 1-...)
+        if (projectTitle && title && currentPage === 1) {
+          return [
+            {
+              text: copyright,
+              style: 'copyright',
+            },
+          ];
+        }
+
+        return generateFooter(docDefinition, currentPage, totalPages)[currentPage];
+      };
 
       generateAndDownloadPdf();
     } catch (error) {
