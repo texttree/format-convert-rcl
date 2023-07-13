@@ -15,7 +15,15 @@ function JsonToPdf({
   showVerseNumber = false,
   imageUrl = 'https://cdn.door43.org/obs/jpg/360px/',
 }) {
-  const { projectTitle, title, back, copyright } = bookPropertiesObs || {};
+  const {
+    projectTitle,
+    title,
+    back,
+    copyright,
+    tableOfContentsTitle,
+    pageHeaderContent,
+    pageFooterContent,
+  } = bookPropertiesObs || {};
 
   const generatePdf = async () => {
     const pageHeaders = {};
@@ -40,6 +48,7 @@ function JsonToPdf({
             projectLanguage: styles.projectLanguage,
             copyright: styles.copyright,
             tableOfContentsTitle: styles.tableOfContentsTitle,
+            currentPage: styles.currentPage,
           }
         : {},
     };
@@ -104,17 +113,19 @@ function JsonToPdf({
     };
 
     const addTableOfContentsPage = () => {
-      docDefinition.content.push([
-        {
-          toc: {
-            title: { text: 'Table Of Contents', style: 'tableOfContentsTitle' },
+      if (tableOfContentsTitle) {
+        docDefinition.content.push([
+          {
+            toc: {
+              title: { text: tableOfContentsTitle, style: 'tableOfContentsTitle' },
+            },
           },
-        },
-        {
-          text: '\n',
-          pageBreak: 'after',
-        },
-      ]);
+          {
+            text: '\n',
+            pageBreak: 'after',
+          },
+        ]);
+      }
     };
 
     const addIntroPage = () => {
@@ -127,7 +138,7 @@ function JsonToPdf({
       }
     };
 
-    const generateHeader = (docDefinition) => {
+    const generatePageHeader = (docDefinition) => {
       let headerLeftText = title;
       let startCurrentChapterPage = 0;
       let endCurrentChapterPage = 0;
@@ -146,7 +157,7 @@ function JsonToPdf({
           endCurrentChapterPage = contentItem.positions[0].pageNumber;
 
           for (let page = startCurrentChapterPage; page < endCurrentChapterPage; page++) {
-            pageHeaders[page] = createHeader(headerLeftText, currentChapterTitle);
+            pageHeaders[page] = createPageHeader(headerLeftText, currentChapterTitle);
           }
 
           currentChapterTitle = contentItem.text;
@@ -157,7 +168,7 @@ function JsonToPdf({
           endCurrentChapterPage = contentItem.positions[0].pageNumber;
 
           for (let page = startCurrentChapterPage; page < endCurrentChapterPage; page++) {
-            pageHeaders[page] = createHeader(headerLeftText, currentChapterTitle);
+            pageHeaders[page] = createPageHeader(headerLeftText, currentChapterTitle);
           }
 
           currentChapterTitle = '';
@@ -166,7 +177,8 @@ function JsonToPdf({
       }
       return pageHeaders;
     };
-    const generateFooter = (docDefinition) => {
+
+    const generatePageFooter = (docDefinition) => {
       const pageFooters = {};
 
       for (let i = 0; i < docDefinition.content.length; i++) {
@@ -176,7 +188,7 @@ function JsonToPdf({
           continue;
         }
 
-        pageFooters[contentItem.positions[0].pageNumber] = createFooter(
+        pageFooters[contentItem.positions[0].pageNumber] = createPageFooter(
           contentItem.positions[0].pageNumber
         );
       }
@@ -184,54 +196,73 @@ function JsonToPdf({
       return pageFooters;
     };
 
-    const createHeader = (leftText, rightText) => {
-      return [
-        {
-          columns: [
-            { text: leftText, bold: true, alignment: 'left', width: '50%' },
-            { text: rightText, bold: true, alignment: 'right', width: '50%' },
-          ],
-          margin: [36, 30, 36, 10],
-        },
-        {
-          canvas: [
-            {
-              type: 'line',
-              x1: 36,
-              y1: 0,
-              x2: 559,
-              y2: 0,
-              lineWidth: 1,
-              lineColor: '#000000',
-            },
-          ],
-        },
-      ];
+    const createPageHeader = (leftText, rightText) => {
+      if (pageHeaderContent) {
+        return pageHeaderContent;
+      } else {
+        return [
+          {
+            columns: [
+              { text: leftText, bold: true, alignment: 'left', width: '50%' },
+              { text: rightText, bold: true, alignment: 'right', width: '50%' },
+            ],
+            margin: [36, 30, 36, 10],
+          },
+          {
+            canvas: [
+              {
+                type: 'line',
+                x1: 36,
+                y1: 0,
+                x2: 559,
+                y2: 0,
+                lineWidth: 1,
+                lineColor: '#000000',
+              },
+            ],
+          },
+        ];
+      }
     };
 
-    const createFooter = (currentPage) => {
-      return [
-        {
-          canvas: [
-            {
-              type: 'line',
-              x1: 36,
-              y1: 0,
-              x2: 559,
-              y2: 0,
-              lineWidth: 1,
-              lineColor: '#000000',
-            },
-          ],
-        },
-        {
-          text: currentPage,
-          fontSize: 16,
-          alignment: 'center',
-          bold: true,
-          margin: [0, 10, 0, 0],
-        },
-      ];
+    const createPageFooter = (currentPage) => {
+      if (pageFooterContent && pageFooterContent.length > 0) {
+        if (pageFooterContent.some((item) => item.text === 'pageNumber')) {
+          const updatedContent = pageFooterContent.map((item) => {
+            if (item.text === 'pageNumber') {
+              return {
+                text: currentPage,
+                style: 'currentPage',
+              };
+            }
+            return item;
+          });
+
+          return updatedContent;
+        } else {
+          return pageFooterContent;
+        }
+      } else {
+        return [
+          {
+            canvas: [
+              {
+                type: 'line',
+                x1: 36,
+                y1: 0,
+                x2: 559,
+                y2: 0,
+                lineWidth: 1,
+                lineColor: '#000000',
+              },
+            ],
+          },
+          {
+            text: currentPage,
+            style: 'currentPage',
+          },
+        ];
+      }
     };
 
     const addDataToDocument = async (dataItem) => {
@@ -358,7 +389,7 @@ function JsonToPdf({
           return null;
         }
 
-        return generateHeader(docDefinition)[currentPage];
+        return generatePageHeader(docDefinition)[currentPage];
       };
 
       docDefinition.footer = function (currentPage) {
@@ -371,7 +402,7 @@ function JsonToPdf({
           ];
         }
 
-        return generateFooter(docDefinition)[currentPage];
+        return generatePageFooter(docDefinition)[currentPage];
       };
 
       generateAndDownloadPdf();

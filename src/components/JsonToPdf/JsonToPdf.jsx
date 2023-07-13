@@ -40,6 +40,10 @@ JsonToPdf.propTypes = {
     intro: PropTypes.string,
     /** endpaper */
     back: PropTypes.string,
+    /** table of contents title */
+    tableOfContentsTitle: PropTypes.string,
+    /** copyright */
+    copyright: PropTypes.string,
   }),
   /** specify the width of the image and the image will be scaled proportionally */
   imageWidth: PropTypes.number,

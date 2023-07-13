@@ -105,13 +105,16 @@ function Component() {
         'Библейская история из Деяний святых апостолов 8:3; 9:1-31; 11:19-26; 13:1-3',
     },
   ];
-
   const bookPropertiesObs = {
     intro: 'Introduction goes here...',
     projectTitle: 'Открытые Библейские Истории',
     copyright: 'unfoldingWord®',
     title: 'Open Bible Stories',
     back: 'Endpaper',
+    tableOfContentsTitle: 'Table Of Contents',
+    // pageHeaderContent: [{ text: 'customPageHeaderContent' }],
+    // pageFooterContent: [{ text: 'pageNumber' }, { text: 'customPageFooterContent' }],
+    // pageFooterContent: [{ text: 'customPageFooterContent' }],
   };
 
   const styles = {
@@ -150,6 +153,7 @@ function Component() {
       alignment: 'justify',
     },
     back: { alignment: 'center' },
+    currentPage: { fontSize: 16, alignment: 'center', bold: true, margin: [0, 10, 0, 0] },
     reference: {
       italics: true,
       margin: [0, 10, 0, 0],
