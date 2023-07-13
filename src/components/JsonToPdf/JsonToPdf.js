@@ -10,19 +10,19 @@ function JsonToPdf({
   imageWidth = 523,
   showImages = true,
   showTitlePage = true,
-  fileName = 'file.pdf',
   combineVerses = false,
   showVerseNumber = false,
+  fileName = 'file.pdf',
   imageUrl = 'https://cdn.door43.org/obs/jpg/360px/',
 }) {
   const {
-    projectTitle,
-    title,
     back,
+    title,
     copyright,
-    tableOfContentsTitle,
+    projectTitle,
     pageHeaderContent,
     pageFooterContent,
+    tableOfContentsTitle,
     noFooterPage = false,
     noHeaderPage = false,
   } = bookPropertiesObs || {};
@@ -40,17 +40,18 @@ function JsonToPdf({
         ? {
             text: styles.text,
             back: styles.back,
-            chapterTitle: styles.chapterTitle,
             intro: styles.intro,
             image: styles.image,
             reference: styles.reference,
-            verseNumber: styles.verseNumber,
-            projectTitle: styles.projectTitle,
             bookTitle: styles.bookTitle,
-            projectLanguage: styles.projectLanguage,
             copyright: styles.copyright,
-            tableOfContentsTitle: styles.tableOfContentsTitle,
             currentPage: styles.currentPage,
+            verseNumber: styles.verseNumber,
+            chapterTitle: styles.chapterTitle,
+            projectTitle: styles.projectTitle,
+            projectLanguage: styles.projectLanguage,
+            defaultPageHeader: styles.defaultPageHeader,
+            tableOfContentsTitle: styles.tableOfContentsTitle,
           }
         : {},
     };
@@ -141,10 +142,10 @@ function JsonToPdf({
     };
 
     const generatePageHeader = (docDefinition) => {
-      let headerLeftText = title;
       let startCurrentChapterPage = 0;
       let endCurrentChapterPage = 0;
       let currentChapterTitle = '';
+      let leftText = title || '';
 
       for (let i = 0; i < docDefinition.content.length; i++) {
         const contentItem = docDefinition.content[i];
@@ -159,7 +160,7 @@ function JsonToPdf({
           endCurrentChapterPage = contentItem.positions[0].pageNumber;
 
           for (let page = startCurrentChapterPage; page < endCurrentChapterPage; page++) {
-            pageHeaders[page] = createPageHeader(headerLeftText, currentChapterTitle);
+            pageHeaders[page] = createPageHeader(leftText, currentChapterTitle);
           }
 
           currentChapterTitle = contentItem.text;
@@ -170,7 +171,7 @@ function JsonToPdf({
           endCurrentChapterPage = contentItem.positions[0].pageNumber;
 
           for (let page = startCurrentChapterPage; page < endCurrentChapterPage; page++) {
-            pageHeaders[page] = createPageHeader(headerLeftText, currentChapterTitle);
+            pageHeaders[page] = createPageHeader(leftText, currentChapterTitle);
           }
 
           currentChapterTitle = '';
@@ -180,36 +181,19 @@ function JsonToPdf({
       return pageHeaders;
     };
 
-    const generatePageFooter = (docDefinition) => {
-      const pageFooters = {};
-
-      for (let i = 0; i < docDefinition.content.length; i++) {
-        const contentItem = docDefinition.content[i];
-
-        if (contentItem?.style === 'intro' || contentItem?.style === 'back') {
-          continue;
-        }
-
-        pageFooters[contentItem.positions[0].pageNumber] = createPageFooter(
-          contentItem.positions[0].pageNumber
-        );
-      }
-
-      return pageFooters;
-    };
-
     const createPageHeader = (leftText, rightText) => {
       if (noHeaderPage) {
         return null;
       }
+
       if (pageHeaderContent) {
         return pageHeaderContent;
       } else {
         return [
           {
             columns: [
-              { text: leftText, bold: true, alignment: 'left', width: '50%' },
-              { text: rightText, bold: true, alignment: 'right', width: '50%' },
+              { text: leftText, style: 'defaultPageHeader', alignment: 'left' },
+              { text: rightText, style: 'defaultPageHeader', alignment: 'right' },
             ],
             margin: [36, 30, 36, 10],
           },
@@ -228,6 +212,24 @@ function JsonToPdf({
           },
         ];
       }
+    };
+
+    const generatePageFooter = (docDefinition) => {
+      const pageFooters = {};
+
+      for (let i = 0; i < docDefinition.content.length; i++) {
+        const contentItem = docDefinition.content[i];
+
+        if (contentItem?.style === 'intro' || contentItem?.style === 'back') {
+          continue;
+        }
+
+        pageFooters[contentItem.positions[0].pageNumber] = createPageFooter(
+          contentItem.positions[0].pageNumber
+        );
+      }
+
+      return pageFooters;
     };
 
     const createPageFooter = (currentPage) => {

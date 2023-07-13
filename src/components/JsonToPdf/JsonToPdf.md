@@ -154,6 +154,7 @@ function Component() {
     text: {
       alignment: 'justify',
     },
+    defaultPageHeader: { bold: true, width: '50%' },
     back: { alignment: 'center' },
     currentPage: { fontSize: 16, alignment: 'center', bold: true, margin: [0, 10, 0, 0] },
     reference: {
