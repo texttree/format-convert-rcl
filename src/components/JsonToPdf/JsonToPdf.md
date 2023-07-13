@@ -119,48 +119,38 @@ function Component() {
     // noFooterPage: true,
   };
 
+  // const customTitlePageContent = {
+  //   text: 'customProjectTitle',
+  //   style: 'projectTitle',
+  //   pageBreak: 'after',
+  // };
+
+  // const customIntroPageContent = {
+  //   text: 'custom Introduction',
+  //   style: 'intro',
+  //   pageBreak: 'after',
+  // };
+
+  // const customBackPageContent = {
+  //   text: 'custom Endpaper',
+  //   style: 'back',
+  //   pageBreak: 'before',
+  // };
+
   const styles = {
-    projectTitle: {
-      alignment: 'center',
-      fontSize: 32,
-      bold: true,
-      margin: [73, 20],
-    },
-    bookTitle: {
-      alignment: 'center',
-      fontSize: 20,
-      bold: true,
-      margin: [73, 0, 73, 20],
-    },
-    projectLanguage: { alignment: 'center', bold: true, margin: [73, 15, 73, 0] },
-    copyright: { alignment: 'center', margin: [0, 10, 0, 0] },
-    chapterTitle: { fontSize: 20, bold: true, margin: [0, 26, 0, 15] },
-    image: {
-      alignment: 'center',
-      margin: [0, 15],
-    },
-    tableOfContentsTitle: { alignment: 'center', margin: [0, 0, 0, 20] },
-    copyright: { alignment: 'center', margin: [0, 10, 0, 0] },
-    chapterTitle: { fontSize: 20, bold: true, margin: [0, 26, 0, 15] },
-    image: {
-      alignment: 'center',
-      margin: [0, 15],
-    },
-    verseNumber: {
-      sup: true,
-      bold: true,
-      opacity: 0.8,
-    },
-    text: {
-      alignment: 'justify',
-    },
-    defaultPageHeader: { bold: true, width: '50%' },
-    back: { alignment: 'center' },
+    bookTitle: { alignment: 'center', fontSize: 20, bold: true, margin: [73, 0, 73, 20] },
     currentPage: { fontSize: 16, alignment: 'center', bold: true, margin: [0, 10, 0, 0] },
-    reference: {
-      italics: true,
-      margin: [0, 10, 0, 0],
-    },
+    projectTitle: { alignment: 'center', fontSize: 32, bold: true, margin: [73, 20] },
+    projectLanguage: { alignment: 'center', bold: true, margin: [73, 15, 73, 0] },
+    tableOfContentsTitle: { alignment: 'center', margin: [0, 0, 0, 20] },
+    chapterTitle: { fontSize: 20, bold: true, margin: [0, 26, 0, 15] },
+    copyright: { alignment: 'center', margin: [0, 10, 0, 0] },
+    verseNumber: { sup: true, bold: true, opacity: 0.8 },
+    reference: { italics: true, margin: [0, 10, 0, 0] },
+    image: { alignment: 'center', margin: [0, 15] },
+    defaultPageHeader: { bold: true, width: '50%' },
+    text: { alignment: 'justify' },
+    back: { alignment: 'center' },
   };
 
   const fileName = 'test-book.pdf';

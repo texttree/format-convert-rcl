@@ -66,4 +66,10 @@ JsonToPdf.propTypes = {
   combineVerses: PropTypes.bool,
   /** parameter that determines whether verse numbers should be displayed when creating a PDF document */
   showVerseNumber: PropTypes.bool,
+  /** pass in a set of objects, according to how you see your title page. Consider the rules of the PDFMake library */
+  customTitlePageContent: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
+  /** pass in a set of objects, according to how you see your intro page. Consider the rules of the PDFMake library */
+  customIntroPageContent: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
+  /** pass in a set of objects, according to how you see your back page. Consider the rules of the PDFMake library */
+  customBackPageContent: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
 };

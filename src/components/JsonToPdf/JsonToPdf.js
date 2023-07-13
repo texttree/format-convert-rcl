@@ -14,6 +14,9 @@ function JsonToPdf({
   showVerseNumber = false,
   fileName = 'file.pdf',
   imageUrl = 'https://cdn.door43.org/obs/jpg/360px/',
+  customTitlePageContent,
+  customIntroPageContent,
+  customBackPageContent,
 }) {
   const {
     back,
@@ -75,43 +78,47 @@ function JsonToPdf({
     };
 
     const addTitlePage = () => {
-      if (projectTitle && title) {
-        docDefinition.content.push(
-          { text: '\n', margin: [0, 100] },
-          {
-            canvas: [
-              {
-                type: 'line',
-                x1: 73,
-                y1: 0,
-                x2: 450,
-                y2: 0,
-                lineWidth: 1,
-                lineColor: '#000000',
-              },
-            ],
-          },
-          { text: projectTitle, style: 'projectTitle' },
-          { text: title, style: 'bookTitle' },
-          {
-            canvas: [
-              {
-                type: 'line',
-                x1: 73,
-                y1: 0,
-                x2: 450,
-                y2: 0,
-                lineWidth: 1,
-                lineColor: '#000000',
-              },
-            ],
-          },
-          {
-            text: 'projectLanguage',
-            style: 'projectLanguage',
-            pageBreak: 'after',
-          }
-        );
+      if (customTitlePageContent) {
+        docDefinition.content.push(customTitlePageContent);
+      } else {
+        if (projectTitle && title) {
+          docDefinition.content.push(
+            { text: '\n', margin: [0, 100] },
+            {
+              canvas: [
+                {
+                  type: 'line',
+                  x1: 73,
+                  y1: 0,
+                  x2: 450,
+                  y2: 0,
+                  lineWidth: 1,
+                  lineColor: '#000000',
+                },
+              ],
+            },
+            { text: projectTitle, style: 'projectTitle' },
+            { text: title, style: 'bookTitle' },
+            {
+              canvas: [
+                {
+                  type: 'line',
+                  x1: 73,
+                  y1: 0,
+                  x2: 450,
+                  y2: 0,
+                  lineWidth: 1,
+                  lineColor: '#000000',
+                },
+              ],
+            },
+            {
+              text: 'projectLanguage',
+              style: 'projectLanguage',
+              pageBreak: 'after',
+            }
+          );
+        }
       }
     };
 
@@ -132,12 +139,16 @@ function JsonToPdf({
     };
 
     const addIntroPage = () => {
-      if (bookPropertiesObs?.intro) {
-        docDefinition.content.push({
-          text: bookPropertiesObs.intro,
-          style: 'intro',
-          pageBreak: 'after',
-        });
+      if (customIntroPageContent) {
+        docDefinition.content.push(customIntroPageContent);
+      } else {
+        if (bookPropertiesObs?.intro) {
+          docDefinition.content.push({
+            text: bookPropertiesObs.intro,
+            style: 'intro',
+            pageBreak: 'after',
+          });
+        }
       }
     };
 
