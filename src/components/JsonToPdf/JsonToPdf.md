@@ -114,7 +114,9 @@ function Component() {
     tableOfContentsTitle: 'Table Of Contents',
     // pageHeaderContent: [{ text: 'customPageHeaderContent' }],
     // pageFooterContent: [{ text: 'pageNumber' }, { text: 'customPageFooterContent' }],
-    // pageFooterContent: [{ text: 'customPageFooterContent' }],
+    // pageFooterContent: [{ text: 'customPageFooterContent', alignment: 'center' }],
+    // noHeaderPage: true,
+    // noFooterPage: true,
   };
 
   const styles = {

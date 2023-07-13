@@ -23,6 +23,8 @@ function JsonToPdf({
     tableOfContentsTitle,
     pageHeaderContent,
     pageFooterContent,
+    noFooterPage = false,
+    noHeaderPage = false,
   } = bookPropertiesObs || {};
 
   const generatePdf = async () => {
@@ -197,6 +199,9 @@ function JsonToPdf({
     };
 
     const createPageHeader = (leftText, rightText) => {
+      if (noHeaderPage) {
+        return null;
+      }
       if (pageHeaderContent) {
         return pageHeaderContent;
       } else {
@@ -226,24 +231,19 @@ function JsonToPdf({
     };
 
     const createPageFooter = (currentPage) => {
-      if (pageFooterContent && pageFooterContent.length > 0) {
-        if (pageFooterContent.some((item) => item.text === 'pageNumber')) {
-          const updatedContent = pageFooterContent.map((item) => {
-            if (item.text === 'pageNumber') {
-              return {
-                text: currentPage,
-                style: 'currentPage',
-              };
-            }
-            return item;
-          });
+      if (noFooterPage) {
+        return null;
+      }
+      const hasPageNumber = pageFooterContent?.some((item) => item.text === 'pageNumber');
 
-          return updatedContent;
-        } else {
-          return pageFooterContent;
-        }
-      } else {
-        return [
+      if (pageFooterContent?.length && hasPageNumber) {
+        return pageFooterContent.map((item) =>
+          item.text === 'pageNumber' ? { text: currentPage, style: 'currentPage' } : item
+        );
+      }
+
+      return (
+        pageFooterContent || [
           {
             canvas: [
               {
@@ -261,8 +261,8 @@ function JsonToPdf({
             text: currentPage,
             style: 'currentPage',
           },
-        ];
-      }
+        ]
+      );
     };
 
     const addDataToDocument = async (dataItem) => {

@@ -20,14 +20,19 @@ JsonToPdf.propTypes = {
   data: PropTypes.object,
   /** an object containing custom styles for the PDF document */
   styles: PropTypes.shape({
-    text: PropTypes.object,
-    back: PropTypes.object,
-    title: PropTypes.object,
-    intro: PropTypes.object,
+    text: PropTypes.string,
+    back: PropTypes.string,
+    chapterTitle: PropTypes.string,
+    intro: PropTypes.string,
     image: PropTypes.object,
-    reference: PropTypes.object,
-    verseNumber: PropTypes.object,
-    projectTitle: PropTypes.object,
+    reference: PropTypes.string,
+    verseNumber: PropTypes.number,
+    projectTitle: PropTypes.string,
+    bookTitle: PropTypes.string,
+    projectLanguage: PropTypes.string,
+    copyright: PropTypes.string,
+    tableOfContentsTitle: PropTypes.string,
+    currentPage: PropTypes.number,
   }) /** PDF file name to download */,
   fileName: PropTypes.string,
   /** is used to add some data to the PDF file's content book. */
@@ -44,6 +49,10 @@ JsonToPdf.propTypes = {
     tableOfContentsTitle: PropTypes.string,
     /** copyright */
     copyright: PropTypes.string,
+    /** if true, then the document is created without numbering */
+    noFooterPage: PropTypes.bool,
+    /** if true, then the document is created without page headers */
+    noHeaderPage: PropTypes.bool,
   }),
   /** specify the width of the image and the image will be scaled proportionally */
   imageWidth: PropTypes.number,
