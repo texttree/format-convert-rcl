@@ -8,6 +8,8 @@ export default function JsonToPdf() {
 JsonToPdf.defaultProps = {
   imageWidth: 500,
   showImages: true,
+  noFooterPage: false,
+  noHeaderPage: false,
   showTitlePage: true,
   fileName: 'file.pdf',
   combineVerses: false,
@@ -20,26 +22,39 @@ JsonToPdf.propTypes = {
   data: PropTypes.object,
   /** an object containing custom styles for the PDF document */
   styles: PropTypes.shape({
-    text: PropTypes.object,
-    back: PropTypes.object,
-    title: PropTypes.object,
-    intro: PropTypes.object,
+    text: PropTypes.string,
+    back: PropTypes.string,
+    intro: PropTypes.string,
     image: PropTypes.object,
-    reference: PropTypes.object,
-    verseNumber: PropTypes.object,
-    projectTitle: PropTypes.object,
+    reference: PropTypes.string,
+    copyright: PropTypes.string,
+    verseNumber: PropTypes.number,
+    currentPage: PropTypes.number,
+    chapterTitle: PropTypes.string,
+    titlePageTitle: PropTypes.string,
+    projectLanguage: PropTypes.string,
+    SubtitlePageTitle: PropTypes.string,
+    tableOfContentsTitle: PropTypes.string,
   }) /** PDF file name to download */,
   fileName: PropTypes.string,
   /** is used to add some data to the PDF file's content book. */
   bookPropertiesObs: PropTypes.shape({
-    /** project title */
-    projectTitle: PropTypes.string,
-    /** book title */
-    title: PropTypes.string,
+    /** title page title */
+    titlePageTitle: PropTypes.string,
+    /** subtitle page title */
+    SubtitlePageTitle: PropTypes.string,
     /** book introduction */
     intro: PropTypes.string,
     /** endpaper */
     back: PropTypes.string,
+    /** table of contents title */
+    tableOfContentsTitle: PropTypes.string,
+    /** copyright */
+    copyright: PropTypes.string,
+    /** if true, then the document is created without numbering */
+    noFooterPage: PropTypes.bool,
+    /** if true, then the document is created without page headers */
+    noHeaderPage: PropTypes.bool,
   }),
   /** specify the width of the image and the image will be scaled proportionally */
   imageWidth: PropTypes.number,
@@ -53,4 +68,10 @@ JsonToPdf.propTypes = {
   combineVerses: PropTypes.bool,
   /** parameter that determines whether verse numbers should be displayed when creating a PDF document */
   showVerseNumber: PropTypes.bool,
+  /** pass in a set of objects, according to how you see your title page. Consider the rules of the PDFMake library */
+  customTitlePageContent: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
+  /** pass in a set of objects, according to how you see your intro page. Consider the rules of the PDFMake library */
+  customIntroPageContent: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
+  /** pass in a set of objects, according to how you see your back page. Consider the rules of the PDFMake library */
+  customBackPageContent: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
 };

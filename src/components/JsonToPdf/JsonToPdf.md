@@ -31,7 +31,7 @@ function Component() {
   const [combineVerses, setCombineVerses] = useState(false);
   const [showVerseNumber, setShowVerseNumber] = useState(false);
   const [isCreatingPdf, setIsCreatingPdf] = useState(false);
-  const [showTitlePage, setShowTitlePage] = useState(true);
+  const [showTitlePage, setShowTitlePage] = useState(false);
 
   const data = [
     {
@@ -85,48 +85,35 @@ function Component() {
         'Библейская история из Деяний святых апостолов 8:3; 9:1-31; 11:19-26; 13:1-3',
     },
   ];
-
   const bookPropertiesObs = {
     intro: 'Introduction goes here...',
-    projectTitle: 'Открытые Библейские Истории',
+    titlePageTitle: 'Открытые Библейские Истории',
     copyright: 'unfoldingWord®',
-    title: 'Open Bible Stories',
+    SubtitlePageTitle: 'Open Bible Stories',
     back: 'Endpaper',
+    tableOfContentsTitle: 'Table Of Contents',
+    projectLanguage: 'Russian',
   };
 
   const styles = {
-    projectTitle: {
-      alignment: 'center',
-      fontSize: 32,
-      bold: true,
-      margin: [73, 20],
-    },
-    bookTitle: {
+    SubtitlePageTitle: {
       alignment: 'center',
       fontSize: 20,
       bold: true,
       margin: [73, 0, 73, 20],
     },
+    currentPage: { fontSize: 16, alignment: 'center', bold: true, margin: [0, 10, 0, 0] },
+    titlePageTitle: { alignment: 'center', fontSize: 32, bold: true, margin: [73, 20] },
     projectLanguage: { alignment: 'center', bold: true, margin: [73, 15, 73, 0] },
-    copyright: { alignment: 'center', margin: [0, 10, 0, 0] },
+    tableOfContentsTitle: { alignment: 'center', margin: [0, 0, 0, 20] },
     chapterTitle: { fontSize: 20, bold: true, margin: [0, 26, 0, 15] },
-    image: {
-      alignment: 'center',
-      margin: [0, 15],
-    },
-    verseNumber: {
-      sup: true,
-      bold: true,
-      opacity: 0.8,
-    },
-    text: {
-      alignment: 'justify',
-    },
+    copyright: { alignment: 'center', margin: [0, 10, 0, 0] },
+    verseNumber: { sup: true, bold: true, opacity: 0.8 },
+    reference: { italics: true, margin: [0, 10, 0, 0] },
+    image: { alignment: 'center', margin: [0, 15] },
+    defaultPageHeader: { bold: true, width: '50%' },
+    text: { alignment: 'justify' },
     back: { alignment: 'center' },
-    reference: {
-      italics: true,
-      margin: [0, 10, 0, 0],
-    },
   };
 
   const fileName = 'test-book.pdf';
@@ -144,9 +131,9 @@ function Component() {
     setShowVerseNumber((prevShowVerseNumber) => !prevShowVerseNumber);
   };
 
-  // const handleToggleTitlePage = () => {
-  //   setShowTitlePage((prevShowTitlePage) => !prevShowTitlePage);
-  // };
+  const handleToggleTitlePage = () => {
+    setShowTitlePage((prevShowTitlePage) => !prevShowTitlePage);
+  };
 
   const handleCreatePdf = () => {
     setIsCreatingPdf(true);
@@ -156,7 +143,7 @@ function Component() {
       fileName,
       showImages,
       combineVerses,
-      showTitlePage: false,
+      showTitlePage,
       showVerseNumber,
       bookPropertiesObs,
     })
@@ -166,10 +153,6 @@ function Component() {
         setIsCreatingPdf(false);
       });
   };
-
-  // <button onClick={handleToggleTitlePage} style={{ marginRight: '10px' }}>
-  // {showTitlePage ? 'Hide Title Page' : 'Show Title Page'}
-  // </button>
 
   return (
     <div>
@@ -183,7 +166,9 @@ function Component() {
       <button onClick={handleToggleVerseNumber} style={{ marginRight: '10px' }}>
         {showVerseNumber ? 'Hide Verse Number' : 'Show Verse Number'}
       </button>
-
+      <button onClick={handleToggleTitlePage} style={{ marginRight: '10px' }}>
+        {showTitlePage ? 'Hide Title Page' : 'Show Title Page'}
+      </button>
       <button onClick={handleToggleImages} style={{ marginRight: '10px' }}>
         {showImages ? 'Hide Images' : 'Show Images'}
       </button>
