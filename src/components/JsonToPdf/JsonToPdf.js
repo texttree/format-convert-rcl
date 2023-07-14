@@ -15,6 +15,8 @@ function JsonToPdf({
   showTitlePage = true,
   fileName = 'file.pdf',
   combineVerses = false,
+  showPageHeaders = true,
+  showPageFooters = true,
   showVerseNumber = false,
   imageUrl = 'https://cdn.door43.org/obs/jpg/360px/',
 }) {
@@ -27,8 +29,6 @@ function JsonToPdf({
     pageHeaderContent,
     pageFooterContent,
     tableOfContentsTitle,
-    noFooterPage = false,
-    noHeaderPage = false,
   } = bookPropertiesObs || {};
 
   const generatePdf = async () => {
@@ -194,10 +194,6 @@ function JsonToPdf({
     };
 
     const createPageHeader = (leftText, rightText) => {
-      if (noHeaderPage) {
-        return null;
-      }
-
       if (pageHeaderContent) {
         return pageHeaderContent;
       } else {
@@ -245,9 +241,6 @@ function JsonToPdf({
     };
 
     const createPageFooter = (currentPage) => {
-      if (noFooterPage) {
-        return null;
-      }
       const hasPageNumber = pageFooterContent?.some((item) => item.text === 'pageNumber');
 
       if (pageFooterContent?.length && hasPageNumber) {
@@ -297,41 +290,32 @@ function JsonToPdf({
       let verseContent = '';
 
       for (const { path, text, verse } of dataItem.verseObjects) {
-        try {
-          if (path && showImages) {
-            const imageDataUrl = await getImageDataUrl(imageUrl + path);
-            docDefinition.content.push({
-              image: imageDataUrl,
-              width: imageWidth,
-              style: 'image',
-            });
-          }
+        if (path && showImages) {
+          const imageDataUrl = await getImageDataUrl(imageUrl + path);
+          docDefinition.content.push({
+            image: imageDataUrl,
+            width: imageWidth,
+            style: 'image',
+          });
+        }
 
-          if (text) {
-            let verseText = text;
-            if (showVerseNumber && combineVerses) {
-              verseText = [
-                { text: ` ${verse}`, style: 'verseNumber' },
-                { text: verseText, style: 'text' },
-              ];
-            } else if (showVerseNumber) {
-              verseText = [
-                { text: `${verse} `, style: 'verseNumber' },
-                { text: verseText, style: 'text' },
-              ];
-            }
-            if (combineVerses) {
-              verseContent += verseText.map((verse) => verse.text).join(' ') + ' ';
-            } else {
-              if (verseContent) {
-                docDefinition.content.push({ text: verseContent, style: 'text' });
-                verseContent = '';
-              }
-              docDefinition.content.push({ text: verseText, style: 'text' });
-            }
+        if (text) {
+          let verseText = text;
+          if (showVerseNumber || (showVerseNumber && combineVerses)) {
+            verseText = [
+              { text: ` ${verse}`, style: 'verseNumber' },
+              { text: verseText, style: 'text' },
+            ];
           }
-        } catch (error) {
-          console.error('Error fetching image data URL:', error);
+          if (combineVerses) {
+            verseContent += verseText.map((verse) => verse.text).join(' ') + ' ';
+          } else {
+            if (verseContent) {
+              docDefinition.content.push({ text: verseContent, style: 'text' });
+              verseContent = '';
+            }
+            docDefinition.content.push({ text: verseText, style: 'text' });
+          }
         }
       }
 
@@ -402,26 +386,30 @@ function JsonToPdf({
 
       addBackPage();
 
-      docDefinition.header = function (currentPage, totalPages) {
-        if (back && currentPage === totalPages) {
-          return null;
-        }
+      if (showPageHeaders) {
+        docDefinition.header = function (currentPage, totalPages) {
+          if (back && currentPage === totalPages) {
+            return null;
+          }
 
-        return generatePageHeader(docDefinition)[currentPage];
-      };
+          return generatePageHeader(docDefinition)[currentPage];
+        };
+      }
 
-      docDefinition.footer = function (currentPage) {
-        if (titlePageTitle && SubtitlePageTitle && currentPage === 1) {
-          return [
-            {
-              text: copyright,
-              style: 'copyright',
-            },
-          ];
-        }
+      if (showPageFooters) {
+        docDefinition.footer = function (currentPage) {
+          if (titlePageTitle && SubtitlePageTitle && currentPage === 1) {
+            return [
+              {
+                text: copyright,
+                style: 'copyright',
+              },
+            ];
+          }
 
-        return generatePageFooter(docDefinition)[currentPage];
-      };
+          return generatePageFooter(docDefinition)[currentPage];
+        };
+      }
 
       generateAndDownloadPdf();
     } catch (error) {
@@ -430,9 +418,7 @@ function JsonToPdf({
   };
 
   return new Promise((resolve, reject) => {
-    generatePdf()
-      .then(() => resolve())
-      .catch((error) => reject(error));
+    generatePdf().then(resolve).catch(reject);
   });
 }
 

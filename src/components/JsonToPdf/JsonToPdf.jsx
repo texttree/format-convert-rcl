@@ -8,8 +8,8 @@ export default function JsonToPdf() {
 JsonToPdf.defaultProps = {
   imageWidth: 500,
   showImages: true,
-  noFooterPage: false,
-  noHeaderPage: false,
+  showPageFooters: true,
+  showPageHeaders: true,
   showTitlePage: true,
   fileName: 'file.pdf',
   combineVerses: false,
@@ -51,10 +51,6 @@ JsonToPdf.propTypes = {
     tableOfContentsTitle: PropTypes.string,
     /** copyright */
     copyright: PropTypes.string,
-    /** if true, then the document is created without numbering */
-    noFooterPage: PropTypes.bool,
-    /** if true, then the document is created without page headers */
-    noHeaderPage: PropTypes.bool,
   }),
   /** specify the width of the image and the image will be scaled proportionally */
   imageWidth: PropTypes.number,
@@ -74,4 +70,8 @@ JsonToPdf.propTypes = {
   customIntroPageContent: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
   /** pass in a set of objects, according to how you see your back page. Consider the rules of the PDFMake library */
   customBackPageContent: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
+  /** if false, then the document is created without numbering */
+  showPageFooters: PropTypes.bool,
+  /** if false, then the document is created without page headers */
+  showPageHeaders: PropTypes.bool,
 };
