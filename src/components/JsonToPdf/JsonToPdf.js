@@ -22,6 +22,7 @@ function JsonToPdf({
 }) {
   const {
     back,
+    intro,
     copyright,
     titlePageTitle,
     projectLanguage,
@@ -143,9 +144,9 @@ function JsonToPdf({
       if (customIntroPageContent) {
         docDefinition.content.push(customIntroPageContent);
       } else {
-        if (bookPropertiesObs?.intro) {
+        if (intro) {
           docDefinition.content.push({
-            text: bookPropertiesObs.intro,
+            text: intro,
             style: 'intro',
             pageBreak: 'after',
           });
@@ -303,9 +304,9 @@ function JsonToPdf({
       if (customBackPageContent) {
         docDefinition.content.push(customBackPageContent);
       } else {
-        if (bookPropertiesObs?.back) {
+        if (back) {
           docDefinition.content.push({
-            text: bookPropertiesObs.back,
+            text: back,
             style: 'back',
             pageBreak: 'before',
           });
