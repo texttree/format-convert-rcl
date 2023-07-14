@@ -8,6 +8,8 @@ export default function JsonToPdf() {
 JsonToPdf.defaultProps = {
   imageWidth: 500,
   showImages: true,
+  noFooterPage: false,
+  noHeaderPage: false,
   showTitlePage: true,
   fileName: 'file.pdf',
   combineVerses: false,
@@ -22,25 +24,25 @@ JsonToPdf.propTypes = {
   styles: PropTypes.shape({
     text: PropTypes.string,
     back: PropTypes.string,
-    chapterTitle: PropTypes.string,
     intro: PropTypes.string,
     image: PropTypes.object,
     reference: PropTypes.string,
-    verseNumber: PropTypes.number,
-    projectTitle: PropTypes.string,
-    bookTitle: PropTypes.string,
-    projectLanguage: PropTypes.string,
     copyright: PropTypes.string,
-    tableOfContentsTitle: PropTypes.string,
+    verseNumber: PropTypes.number,
     currentPage: PropTypes.number,
+    chapterTitle: PropTypes.string,
+    titlePageTitle: PropTypes.string,
+    projectLanguage: PropTypes.string,
+    SubtitlePageTitle: PropTypes.string,
+    tableOfContentsTitle: PropTypes.string,
   }) /** PDF file name to download */,
   fileName: PropTypes.string,
   /** is used to add some data to the PDF file's content book. */
   bookPropertiesObs: PropTypes.shape({
-    /** project title */
-    projectTitle: PropTypes.string,
-    /** book title */
-    title: PropTypes.string,
+    /** title page title */
+    titlePageTitle: PropTypes.string,
+    /** subtitle page title */
+    SubtitlePageTitle: PropTypes.string,
     /** book introduction */
     intro: PropTypes.string,
     /** endpaper */

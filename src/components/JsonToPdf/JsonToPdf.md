@@ -64,26 +64,6 @@ function Component() {
           text: 'Фарисеи и учителя Закона увидели, что Иисус общался с теми людьми как с друзьями. Поэтому они стали возмущаться и говорить друг другу: «Он поступает неправильно, разговаривает с грешниками и даже ест вместе с ними». Иисус услышал их и рассказал им такую историю:',
           verse: '2',
         },
-        {
-          path: 'obs-en-35-03.jpg',
-          text: 'Однажды Иисус учил толпу людей, собравшихся Его послушать. Среди них были сборщики налогов и другие люди, которые не исполняли закон Моисея, и поэтому их считали грешниками.',
-          verse: '3',
-        },
-        {
-          path: 'obs-en-35-04.jpg',
-          text: 'Фарисеи и учителя Закона увидели, что Иисус общался с теми людьми как с друзьями. Поэтому они стали возмущаться и говорить друг другу: «Он поступает неправильно, разговаривает с грешниками и даже ест вместе с ними». Иисус услышал их и рассказал им такую историю:',
-          verse: '4',
-        },
-        {
-          path: 'obs-en-35-05.jpg',
-          text: 'Однажды Иисус учил толпу людей, собравшихся Его послушать. Среди них были сборщики налогов и другие люди, которые не исполняли закон Моисея, и поэтому их считали грешниками.',
-          verse: '5',
-        },
-        {
-          path: 'obs-en-35-06.jpg',
-          text: 'Фарисеи и учителя Закона увидели, что Иисус общался с теми людьми как с друзьями. Поэтому они стали возмущаться и говорить друг другу: «Он поступает неправильно, разговаривает с грешниками и даже ест вместе с ними». Иисус услышал их и рассказал им такую историю:',
-          verse: '6',
-        },
       ],
       reference: 'Библейская история из Евангелия от Луки 15:11-32',
     },
@@ -107,40 +87,23 @@ function Component() {
   ];
   const bookPropertiesObs = {
     intro: 'Introduction goes here...',
-    projectTitle: 'Открытые Библейские Истории',
+    titlePageTitle: 'Открытые Библейские Истории',
     copyright: 'unfoldingWord®',
-    title: 'Open Bible Stories',
+    SubtitlePageTitle: 'Open Bible Stories',
     back: 'Endpaper',
     tableOfContentsTitle: 'Table Of Contents',
-    // pageHeaderContent: [{ text: 'customPageHeaderContent' }],
-    // pageFooterContent: [{ text: 'pageNumber' }, { text: 'customPageFooterContent' }],
-    // pageFooterContent: [{ text: 'customPageFooterContent', alignment: 'center' }],
-    // noHeaderPage: true,
-    // noFooterPage: true,
+    projectLanguage: 'Russian',
   };
 
-  // const customTitlePageContent = {
-  //   text: 'customProjectTitle',
-  //   style: 'projectTitle',
-  //   pageBreak: 'after',
-  // };
-
-  // const customIntroPageContent = {
-  //   text: 'custom Introduction',
-  //   style: 'intro',
-  //   pageBreak: 'after',
-  // };
-
-  // const customBackPageContent = {
-  //   text: 'custom Endpaper',
-  //   style: 'back',
-  //   pageBreak: 'before',
-  // };
-
   const styles = {
-    bookTitle: { alignment: 'center', fontSize: 20, bold: true, margin: [73, 0, 73, 20] },
+    SubtitlePageTitle: {
+      alignment: 'center',
+      fontSize: 20,
+      bold: true,
+      margin: [73, 0, 73, 20],
+    },
     currentPage: { fontSize: 16, alignment: 'center', bold: true, margin: [0, 10, 0, 0] },
-    projectTitle: { alignment: 'center', fontSize: 32, bold: true, margin: [73, 20] },
+    titlePageTitle: { alignment: 'center', fontSize: 32, bold: true, margin: [73, 20] },
     projectLanguage: { alignment: 'center', bold: true, margin: [73, 15, 73, 0] },
     tableOfContentsTitle: { alignment: 'center', margin: [0, 0, 0, 20] },
     chapterTitle: { fontSize: 20, bold: true, margin: [0, 26, 0, 15] },

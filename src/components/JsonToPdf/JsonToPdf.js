@@ -4,25 +4,26 @@ import pdfFonts from 'pdfmake/build/vfs_fonts';
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 function JsonToPdf({
-  data,
-  styles,
-  bookPropertiesObs,
-  imageWidth = 523,
-  showImages = true,
-  showTitlePage = true,
-  combineVerses = false,
-  showVerseNumber = false,
-  fileName = 'file.pdf',
-  imageUrl = 'https://cdn.door43.org/obs/jpg/360px/',
   customTitlePageContent,
   customIntroPageContent,
   customBackPageContent,
+  bookPropertiesObs,
+  styles,
+  data,
+  imageWidth = 523,
+  showImages = true,
+  showTitlePage = true,
+  fileName = 'file.pdf',
+  combineVerses = false,
+  showVerseNumber = false,
+  imageUrl = 'https://cdn.door43.org/obs/jpg/360px/',
 }) {
   const {
     back,
-    title,
     copyright,
-    projectTitle,
+    titlePageTitle,
+    projectLanguage,
+    SubtitlePageTitle,
     pageHeaderContent,
     pageFooterContent,
     tableOfContentsTitle,
@@ -43,17 +44,17 @@ function JsonToPdf({
         ? {
             text: styles.text,
             back: styles.back,
-            intro: styles.intro,
             image: styles.image,
+            intro: styles.intro,
             reference: styles.reference,
-            bookTitle: styles.bookTitle,
             copyright: styles.copyright,
-            currentPage: styles.currentPage,
             verseNumber: styles.verseNumber,
+            currentPage: styles.currentPage,
             chapterTitle: styles.chapterTitle,
-            projectTitle: styles.projectTitle,
+            titlePageTitle: styles.titlePageTitle,
             projectLanguage: styles.projectLanguage,
             defaultPageHeader: styles.defaultPageHeader,
+            SubtitlePageTitle: styles.SubtitlePageTitle,
             tableOfContentsTitle: styles.tableOfContentsTitle,
           }
         : {},
@@ -81,7 +82,7 @@ function JsonToPdf({
       if (customTitlePageContent) {
         docDefinition.content.push(customTitlePageContent);
       } else {
-        if (projectTitle && title) {
+        if (titlePageTitle && SubtitlePageTitle) {
           docDefinition.content.push(
             { text: '\n', margin: [0, 100] },
             {
@@ -97,8 +98,8 @@ function JsonToPdf({
                 },
               ],
             },
-            { text: projectTitle, style: 'projectTitle' },
-            { text: title, style: 'bookTitle' },
+            { text: titlePageTitle, style: 'titlePageTitle' },
+            { text: SubtitlePageTitle, style: 'SubtitlePageTitle' },
             {
               canvas: [
                 {
@@ -113,7 +114,7 @@ function JsonToPdf({
               ],
             },
             {
-              text: 'projectLanguage',
+              text: projectLanguage,
               style: 'projectLanguage',
               pageBreak: 'after',
             }
@@ -156,7 +157,7 @@ function JsonToPdf({
       let startCurrentChapterPage = 0;
       let endCurrentChapterPage = 0;
       let currentChapterTitle = '';
-      let leftText = title || '';
+      let leftText = SubtitlePageTitle || '';
 
       for (let i = 0; i < docDefinition.content.length; i++) {
         const contentItem = docDefinition.content[i];
@@ -373,12 +374,16 @@ function JsonToPdf({
     };
 
     const addBackPage = () => {
-      if (bookPropertiesObs?.back) {
-        docDefinition.content.push({
-          text: bookPropertiesObs.back,
-          style: 'back',
-          pageBreak: 'before',
-        });
+      if (customBackPageContent) {
+        docDefinition.content.push(customBackPageContent);
+      } else {
+        if (bookPropertiesObs?.back) {
+          docDefinition.content.push({
+            text: bookPropertiesObs.back,
+            style: 'back',
+            pageBreak: 'before',
+          });
+        }
       }
     };
 
@@ -406,7 +411,7 @@ function JsonToPdf({
       };
 
       docDefinition.footer = function (currentPage) {
-        if (projectTitle && title && currentPage === 1) {
+        if (titlePageTitle && SubtitlePageTitle && currentPage === 1) {
           return [
             {
               text: copyright,
