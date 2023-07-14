@@ -10,7 +10,7 @@ JsonToPdf.defaultProps = {
   showImages: true,
   showPageFooters: true,
   showPageHeaders: true,
-  showTitlePage: true,
+  showChapterTitlePage: true,
   fileName: 'file.pdf',
   combineVerses: false,
   showVerseNumber: false,
@@ -59,7 +59,7 @@ JsonToPdf.propTypes = {
   /** option that disables the display of images in PDF */
   showImages: PropTypes.bool,
   /** option that displays the title of the chapter on a separate page */
-  showTitlePage: PropTypes.bool,
+  showChapterTitlePage: PropTypes.bool,
   /** option combines verses into one line */
   combineVerses: PropTypes.bool,
   /** parameter that determines whether verse numbers should be displayed when creating a PDF document */

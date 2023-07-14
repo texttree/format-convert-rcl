@@ -12,7 +12,7 @@ function JsonToPdf({
   data,
   imageWidth = 523,
   showImages = true,
-  showTitlePage = true,
+  showChapterTitlePage = true,
   fileName = 'file.pdf',
   combineVerses = false,
   showPageHeaders = true,
@@ -280,7 +280,7 @@ function JsonToPdf({
           tocItem: true,
         };
 
-        if (showTitlePage) {
+        if (showChapterTitlePage) {
           titleBlock.pageBreak = 'after';
         }
 
@@ -387,11 +387,7 @@ function JsonToPdf({
       addBackPage();
 
       if (showPageHeaders) {
-        docDefinition.header = function (currentPage, totalPages) {
-          if (back && currentPage === totalPages) {
-            return null;
-          }
-
+        docDefinition.header = function (currentPage) {
           return generatePageHeader(docDefinition)[currentPage];
         };
       }
