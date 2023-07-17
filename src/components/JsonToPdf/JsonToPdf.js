@@ -12,14 +12,17 @@ function JsonToPdf({
   data,
   imageWidth = 523,
   showImages = true,
-  showTitlePage = true,
+  showChapterTitlePage = true,
   fileName = 'file.pdf',
   combineVerses = false,
+  showPageHeaders = true,
+  showPageFooters = true,
   showVerseNumber = false,
   imageUrl = 'https://cdn.door43.org/obs/jpg/360px/',
 }) {
   const {
     back,
+    intro,
     copyright,
     titlePageTitle,
     projectLanguage,
@@ -27,8 +30,6 @@ function JsonToPdf({
     pageHeaderContent,
     pageFooterContent,
     tableOfContentsTitle,
-    noFooterPage = false,
-    noHeaderPage = false,
   } = bookPropertiesObs || {};
 
   const generatePdf = async () => {
@@ -143,9 +144,9 @@ function JsonToPdf({
       if (customIntroPageContent) {
         docDefinition.content.push(customIntroPageContent);
       } else {
-        if (bookPropertiesObs?.intro) {
+        if (intro) {
           docDefinition.content.push({
-            text: bookPropertiesObs.intro,
+            text: intro,
             style: 'intro',
             pageBreak: 'after',
           });
@@ -153,51 +154,7 @@ function JsonToPdf({
       }
     };
 
-    const generatePageHeader = (docDefinition) => {
-      let startCurrentChapterPage = 0;
-      let endCurrentChapterPage = 0;
-      let currentChapterTitle = '';
-      let leftText = SubtitlePageTitle || '';
-
-      for (let i = 0; i < docDefinition.content.length; i++) {
-        const contentItem = docDefinition.content[i];
-
-        if (contentItem?.style === 'chapterTitle') {
-          if (startCurrentChapterPage === 0) {
-            startCurrentChapterPage = contentItem.positions[0].pageNumber;
-            currentChapterTitle = contentItem.text;
-            continue;
-          }
-
-          endCurrentChapterPage = contentItem.positions[0].pageNumber;
-
-          for (let page = startCurrentChapterPage; page < endCurrentChapterPage; page++) {
-            pageHeaders[page] = createPageHeader(leftText, currentChapterTitle);
-          }
-
-          currentChapterTitle = contentItem.text;
-          startCurrentChapterPage = endCurrentChapterPage;
-        }
-
-        if (contentItem?.style === 'back' && startCurrentChapterPage !== 0) {
-          endCurrentChapterPage = contentItem.positions[0].pageNumber;
-
-          for (let page = startCurrentChapterPage; page < endCurrentChapterPage; page++) {
-            pageHeaders[page] = createPageHeader(leftText, currentChapterTitle);
-          }
-
-          currentChapterTitle = '';
-          startCurrentChapterPage = endCurrentChapterPage;
-        }
-      }
-      return pageHeaders;
-    };
-
     const createPageHeader = (leftText, rightText) => {
-      if (noHeaderPage) {
-        return null;
-      }
-
       if (pageHeaderContent) {
         return pageHeaderContent;
       } else {
@@ -226,28 +183,7 @@ function JsonToPdf({
       }
     };
 
-    const generatePageFooter = (docDefinition) => {
-      const pageFooters = {};
-
-      for (let i = 0; i < docDefinition.content.length; i++) {
-        const contentItem = docDefinition.content[i];
-
-        if (contentItem?.style === 'intro' || contentItem?.style === 'back') {
-          continue;
-        }
-
-        pageFooters[contentItem.positions[0].pageNumber] = createPageFooter(
-          contentItem.positions[0].pageNumber
-        );
-      }
-
-      return pageFooters;
-    };
-
     const createPageFooter = (currentPage) => {
-      if (noFooterPage) {
-        return null;
-      }
       const hasPageNumber = pageFooterContent?.some((item) => item.text === 'pageNumber');
 
       if (pageFooterContent?.length && hasPageNumber) {
@@ -287,7 +223,7 @@ function JsonToPdf({
           tocItem: true,
         };
 
-        if (showTitlePage) {
+        if (showChapterTitlePage) {
           titleBlock.pageBreak = 'after';
         }
 
@@ -297,41 +233,32 @@ function JsonToPdf({
       let verseContent = '';
 
       for (const { path, text, verse } of dataItem.verseObjects) {
-        try {
-          if (path && showImages) {
-            const imageDataUrl = await getImageDataUrl(imageUrl + path);
-            docDefinition.content.push({
-              image: imageDataUrl,
-              width: imageWidth,
-              style: 'image',
-            });
-          }
+        if (path && showImages) {
+          const imageDataUrl = await getImageDataUrl(imageUrl + path);
+          docDefinition.content.push({
+            image: imageDataUrl,
+            width: imageWidth,
+            style: 'image',
+          });
+        }
 
-          if (text) {
-            let verseText = text;
-            if (showVerseNumber && combineVerses) {
-              verseText = [
-                { text: ` ${verse}`, style: 'verseNumber' },
-                { text: verseText, style: 'text' },
-              ];
-            } else if (showVerseNumber) {
-              verseText = [
-                { text: `${verse} `, style: 'verseNumber' },
-                { text: verseText, style: 'text' },
-              ];
-            }
-            if (combineVerses) {
-              verseContent += verseText.map((verse) => verse.text).join(' ') + ' ';
-            } else {
-              if (verseContent) {
-                docDefinition.content.push({ text: verseContent, style: 'text' });
-                verseContent = '';
-              }
-              docDefinition.content.push({ text: verseText, style: 'text' });
-            }
+        if (text) {
+          let verseText = text;
+          if (showVerseNumber || (showVerseNumber && combineVerses)) {
+            verseText = [
+              { text: ` ${verse}`, style: 'verseNumber' },
+              { text: verseText, style: 'text' },
+            ];
           }
-        } catch (error) {
-          console.error('Error fetching image data URL:', error);
+          if (combineVerses) {
+            verseContent += verseText.map((verse) => verse.text).join(' ') + ' ';
+          } else {
+            if (verseContent) {
+              docDefinition.content.push({ text: verseContent, style: 'text' });
+              verseContent = '';
+            }
+            docDefinition.content.push({ text: verseText, style: 'text' });
+          }
         }
       }
 
@@ -377,9 +304,9 @@ function JsonToPdf({
       if (customBackPageContent) {
         docDefinition.content.push(customBackPageContent);
       } else {
-        if (bookPropertiesObs?.back) {
+        if (back) {
           docDefinition.content.push({
-            text: bookPropertiesObs.back,
+            text: back,
             style: 'back',
             pageBreak: 'before',
           });
@@ -387,30 +314,96 @@ function JsonToPdf({
       }
     };
 
-    const generateAndDownloadPdf = () => {
-      pdfMake.createPdf(docDefinition).download(fileName);
-    };
-
-    addTitlePage();
-    addIntroPage();
-    addTableOfContentsPage();
-
     try {
+      addTitlePage();
+      addIntroPage();
+      addTableOfContentsPage();
+
       for (const dataItem of data) {
         await addDataToDocument(dataItem);
       }
 
       addBackPage();
+    } catch (error) {
+      console.error('Error generating content:', error);
+      return;
+    }
 
-      docDefinition.header = function (currentPage, totalPages) {
-        if (back && currentPage === totalPages) {
-          return null;
+    if (showPageHeaders) {
+      const generatePageHeader = (docDefinition) => {
+        let startCurrentChapterPage = 0;
+        let endCurrentChapterPage = 0;
+        let currentChapterTitle = '';
+        let leftText = SubtitlePageTitle || '';
+
+        for (let i = 0; i < docDefinition.content.length; i++) {
+          const contentItem = docDefinition.content[i];
+
+          if (contentItem?.style === 'chapterTitle') {
+            if (startCurrentChapterPage === 0) {
+              startCurrentChapterPage = contentItem.positions[0].pageNumber;
+              currentChapterTitle = contentItem.text;
+              continue;
+            }
+
+            endCurrentChapterPage = contentItem.positions[0].pageNumber;
+
+            for (
+              let page = startCurrentChapterPage;
+              page < endCurrentChapterPage;
+              page++
+            ) {
+              pageHeaders[page] = createPageHeader(leftText, currentChapterTitle);
+            }
+
+            currentChapterTitle = contentItem.text;
+            startCurrentChapterPage = endCurrentChapterPage;
+          }
+
+          if (contentItem?.style === 'back' && startCurrentChapterPage !== 0) {
+            endCurrentChapterPage = contentItem.positions[0].pageNumber;
+
+            for (
+              let page = startCurrentChapterPage;
+              page < endCurrentChapterPage;
+              page++
+            ) {
+              pageHeaders[page] = createPageHeader(leftText, currentChapterTitle);
+            }
+
+            currentChapterTitle = '';
+            startCurrentChapterPage = endCurrentChapterPage;
+          }
         }
-
-        return generatePageHeader(docDefinition)[currentPage];
+        return pageHeaders;
       };
 
-      docDefinition.footer = function (currentPage) {
+      docDefinition.header = (currentPage) => {
+        const pageHeaders = generatePageHeader(docDefinition);
+        return pageHeaders[currentPage];
+      };
+    }
+
+    if (showPageFooters) {
+      const generatePageFooter = (docDefinition) => {
+        const pageFooters = {};
+
+        for (let i = 0; i < docDefinition.content.length; i++) {
+          const contentItem = docDefinition.content[i];
+
+          if (contentItem?.style === 'intro' || contentItem?.style === 'back') {
+            continue;
+          }
+
+          pageFooters[contentItem.positions[0].pageNumber] = createPageFooter(
+            contentItem.positions[0].pageNumber
+          );
+        }
+
+        return pageFooters;
+      };
+
+      docDefinition.footer = (currentPage) => {
         if (titlePageTitle && SubtitlePageTitle && currentPage === 1) {
           return [
             {
@@ -422,17 +415,17 @@ function JsonToPdf({
 
         return generatePageFooter(docDefinition)[currentPage];
       };
+    }
 
-      generateAndDownloadPdf();
+    try {
+      pdfMake.createPdf(docDefinition).download(fileName);
     } catch (error) {
       console.error('Error rendering PDF:', error);
     }
   };
 
   return new Promise((resolve, reject) => {
-    generatePdf()
-      .then(() => resolve())
-      .catch((error) => reject(error));
+    generatePdf().then(resolve).catch(reject);
   });
 }
 

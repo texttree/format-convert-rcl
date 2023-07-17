@@ -31,7 +31,7 @@ function Component() {
   const [combineVerses, setCombineVerses] = useState(false);
   const [showVerseNumber, setShowVerseNumber] = useState(false);
   const [isCreatingPdf, setIsCreatingPdf] = useState(false);
-  const [showTitlePage, setShowTitlePage] = useState(false);
+  const [showChapterTitlePage, setshowChapterTitlePage] = useState(false);
 
   const data = [
     {
@@ -132,7 +132,7 @@ function Component() {
   };
 
   const handleToggleTitlePage = () => {
-    setShowTitlePage((prevShowTitlePage) => !prevShowTitlePage);
+    setshowChapterTitlePage((prevshowChapterTitlePage) => !prevshowChapterTitlePage);
   };
 
   const handleCreatePdf = () => {
@@ -143,7 +143,7 @@ function Component() {
       fileName,
       showImages,
       combineVerses,
-      showTitlePage,
+      showChapterTitlePage,
       showVerseNumber,
       bookPropertiesObs,
     })
@@ -167,7 +167,7 @@ function Component() {
         {showVerseNumber ? 'Hide Verse Number' : 'Show Verse Number'}
       </button>
       <button onClick={handleToggleTitlePage} style={{ marginRight: '10px' }}>
-        {showTitlePage ? 'Hide Title Page' : 'Show Title Page'}
+        {showChapterTitlePage ? 'Hide Chapter Title Page' : 'Show Chapter Title Page'}
       </button>
       <button onClick={handleToggleImages} style={{ marginRight: '10px' }}>
         {showImages ? 'Hide Images' : 'Show Images'}
