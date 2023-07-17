@@ -2,6 +2,19 @@
 
 This repository is part of the open components ecosystem.
 
+## [0.4.0](https://github.com/texttree/obs-format-convert-rcl/compare/v0.3.0...v0.4.0) (2023-07-17)
+
+### Features
+
+- :construction: show/hide page headers/footers ([fe16082](https://github.com/texttree/obs-format-convert-rcl/commit/fe160820e23814bc4063eb67a510d80901bac987))
+- :sparkles: added table of contents шт PDF ([37c9815](https://github.com/texttree/obs-format-convert-rcl/commit/37c9815b68efbd26b292893a96feebeb2373ef34))
+- :sparkles: wip bring PDF to view in Figma (headers and footers) ([b96b96b](https://github.com/texttree/obs-format-convert-rcl/commit/b96b96b93a4dc3c3ea53725134060e3e09768721))
+
+### Bug Fixes
+
+- :construction: error correction ([3a3e30b](https://github.com/texttree/obs-format-convert-rcl/commit/3a3e30b20d2139a60c78453a1a6f00c757016154))
+- :construction: fix header ([559be24](https://github.com/texttree/obs-format-convert-rcl/commit/559be24e01bd9eee4431a10105f569d08e12fd16))
+
 ## [0.3.0](https://github.com/texttree/obs-format-convert-rcl/compare/v0.1.2...v0.3.0) (2023-07-05)
 
 ### Features
