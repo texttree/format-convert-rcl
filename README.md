@@ -1,26 +1,20 @@
 <div id="top"></div>
 
-[![Contributors](https://img.shields.io/github/contributors/texttree/template-rcl.svg?style=for-the-badge)](https://github.com/texttree/template-rcl/graphs/contributors)
-[![Forks](https://img.shields.io/github/forks/texttree/template-rcl.svg?style=for-the-badge)](https://github.com/texttree/template-rcl/network/members)
-[![Stargazers](https://img.shields.io/github/stars/texttree/template-rcl.svg?style=for-the-badge)](https://github.com/texttree/template-rcl/stargazers)
-[![Issues](https://img.shields.io/github/issues/texttree/template-rcl.svg?style=for-the-badge)](https://github.com/texttree/template-rcl/issues)
-[![MIT License](https://img.shields.io/github/license/texttree/template-rcl.svg?style=for-the-badge)](https://github.com/texttree/template-rcl/blob/master/LICENSE)
+[![Contributors](https://img.shields.io/github/contributors/texttree/obs-format-convert-rcl.svg?style=for-the-badge)](https://github.com/texttree/obs-format-convert-rcl/graphs/contributors)
+[![Forks](https://img.shields.io/github/forks/texttree/obs-format-convert-rcl.svg?style=for-the-badge)](https://github.com/texttree/obs-format-convert-rcl/network/members)
+[![Stargazers](https://img.shields.io/github/stars/texttree/obs-format-convert-rcl.svg?style=for-the-badge)](https://github.com/texttree/obs-format-convert-rcl/stargazers)
+[![Issues](https://img.shields.io/github/issues/texttree/obs-format-convert-rcl.svg?style=for-the-badge)](https://github.com/texttree/obs-format-convert-rcl/issues)
+[![MIT License](https://img.shields.io/github/license/texttree/obs-format-convert-rcl.svg?style=for-the-badge)](https://github.com/texttree/obs-format-convert-rcl/blob/master/LICENSE)
 
-<div align="center">
-  <a href="https://github.com/texttree/template-rcl">
-    <img src="https://github.com/texttree/template-rcl/raw/master/images/logo.svg" alt="Logo" width="256" height="256">
-  </a>
-</div>
-
-<h2><div align="center">project_title</div></h2>
+<h2><div align="center">obs-format-convert-rcl</div></h2>
 <br />
 
-<center><strong><a href="https://template-rcl.netlify.app">Explore the docs and code playground »</a></strong></center>
+<center><strong><a href="https://obs-format-convert-rcl.netlify.app">Explore the docs and code playground »</a></strong></center>
 <br />
 <br />
 <center>
-  <a href="https://github.com/texttree/template-rcl/issues">Report Bug · </a>
-  <a href="https://github.com/texttree/template-rcl/issues">Request Feature</a>
+  <a href="https://github.com/texttree/obs-format-convert-rcl/issues">Report Bug · </a>
+  <a href="https://github.com/texttree/obs-format-convert-rcl/issues">Request Feature</a>
 </center>
 
 <br />
@@ -52,21 +46,43 @@
 
 ## About The Project
 
-<img src="https://github.com/texttree/template-rcl/raw/master/images/screenshot.png" alt="Projector Mode RCL Shot" width="100%">
+The React Component Library includes 5 components.
+The name **obs-format-convert-rcl** reflects the main function of the library - converting data from one format to another.
 
-Description
+**1. JsonToHtml** takes as arguments a **jsonData** object and a **styleObj** styles object (an optional argument). The function converts the passed JSON object into HTML markup using the specified styles. The structure of the JSON object expected as input must contain the following properties:
 
-**Purpose**
+- title - content title;
+- reference - link or information about the origin of the content;
+- verseObjects - array of verse objects.
 
-- **Problem**
+**2. JsonToMd** takes a ref object as an argument and converts its contents to Markdown format. The ref object structure must contain the following properties:
 
-- **Scope**
+- title - content title;
+- reference - link or information about the origin of the content;
+- verseObjects - array of verse objects.
 
-- **Background**
+If the ref object has a title property, it will be displayed as a first-level title (#). If the reference property is present, it will be displayed in italics (\_ \_).
 
--
+The function then loops through the verseObjects array and for each verse object adds the text of the verse in Markdown format. If the verse object contains a urlImage property, it will be rendered as a Markdown image.
 
-<a style="text-align: right; display: block" href="#top">(back to top)</a>
+**3. JsonToPdf** displays a button to create and download a PDF document based on the data passed. The component uses the pdfMake library to create and manage PDF documents in the browser.
+The component accepts props:
+
+- **data**, - an object containing the data to generate the PDF. It should have the following structure: **title**, **reference**, **verseObjects**.
+
+- **styles**, - an object containing custom styles for the PDF document. It can include styles for the title, link, image, and text. The passed styles are merged with the default inline styles.
+
+- **fileName**, - PDF file name to download.
+
+**4. MdToJson** takes a string in Markdown (md) format and converts it to a JSON object.
+Breaks the input string into blocks based on the empty lines in between. The first block is considered a title, the last block is a link or information about the origin of the content. The remaining blocks are considered verses.
+If an error occurs while converting Markdown to JSON, an exception will be thrown with an error message.
+
+**5. MdToZip** takes a string in Markdown format and creates a ZIP archive containing a file with the given content. The component uses the jszip library to create and manage ZIP archives, and the saveAs function from the file-saver library to load the archive.
+The component accepts props:
+
+- fileName (default document.md) - the name of the file to be created inside the ZIP archive;
+- markdown - a string containing the contents of the file in Markdown format.
 
 ### Built With
 
@@ -86,13 +102,13 @@ Add the library to your React app
 - yarn
 
 ```bash
-yarn add @texttree/template-rcl
+yarn add @texttree/obs-format-convert-rcl
 ```
 
 - npm
 
 ```bash
-npm install @texttree/template-rcl
+npm install @texttree/obs-format-convert-rcl
 ```
 
 <a style="text-align: right; display: block" href="#top">(back to top)</a>
@@ -101,9 +117,7 @@ npm install @texttree/template-rcl
 
 ## Usage
 
-Example of usage
-
-_For more examples, please refer to the [Styleguidist link](https://template-rcl.netlify.app)_
+_For examples, please refer to the [Styleguidist link](https://obs-format-convert-rcl.netlify.app)_
 
 <a style="text-align: right; display: block" href="#top">(back to top)</a>
 
@@ -111,7 +125,7 @@ _For more examples, please refer to the [Styleguidist link](https://template-rcl
 
 ## Roadmap
 
-See the [open issues](https://github.com/texttree/template-rcl/issues) for a full list of proposed features (and known issues).
+See the [open issues](https://github.com/texttree/obs-format-convert-rcl/issues) for a full list of proposed features (and known issues).
 
 <a style="text-align: right; display: block" href="#top">(back to top)</a>
 
@@ -138,7 +152,7 @@ If you would like to fork the repo and create a pull request.
 
 ## License
 
-Distributed under the MIT License. See [LICENSE](https://github.com/texttree/template-rcl/blob/master/LICENSE) for more information.
+Distributed under the MIT License. See [LICENSE](https://github.com/texttree/obs-format-convert-rcl/blob/master/LICENSE) for more information.
 
 <a style="text-align: right; display: block" href="#top">(back to top)</a>
 
@@ -146,6 +160,6 @@ Distributed under the MIT License. See [LICENSE](https://github.com/texttree/tem
 
 ## Contact
 
-Project Link: [https://github.com/texttree/template-rcl](https://github.com/texttree/template-rcl)
+Project Link: [https://github.com/texttree/obs-format-convert-rcl](https://github.com/texttree/obs-format-convert-rcl)
 
 <a style="text-align: right; display: block" href="#top">(back to top)</a>
