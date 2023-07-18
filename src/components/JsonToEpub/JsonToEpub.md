@@ -1,17 +1,36 @@
+### Options:
+
+- `title`: `string`
+  Title of the book
+- `author`: `string | string[]` (optional, default `['anonymous']`)
+  Name of the author for the book, e.g. `"Alice"` or `["Alice", "Bob"]`
+- `publisher`: `string` (optional, default `anonymous`)
+  Publisher name
+- `tocTitle`: `string` (optional, default `Table of Contents`)
+  Title of the Table of Contents
+- `numberChaptersInTOC`: `boolean` (optional, default `true`)
+  Automatically number entries in TOC
+- `lang`: `string` (optional, default `en`)
+  Language code of the book
+- `verbose`: `boolean | ((type, ...args) => void)` (optional, default `false`)
+  Whether to log progress messages; If a function is provided, the first argument will either be `'log'` or `'warn'`
+
+You can see the full list of options by visiting the library [epub-gen-memory](https://github.com/cpiber/epub-gen-memory#options)
+
 ### An example of converting a JSON object back to an MD file
 
 ```jsx
 import { useState, useEffect } from 'react';
+import ReactMarkdown from 'react-markdown';
 import axios from 'axios';
 import Showdown from 'showdown';
-import ReactMarkdown from 'react-markdown';
 
 import { JsonToEpub, MdToJson } from '@texttree/obs-format-convert-rcl';
 
-const [data, setData] = useState([]);
+const [isDataLoaded, setIsDataLoaded] = useState(false);
 const [front, setFront] = useState('');
 const [back, setBack] = useState('');
-const [isDataLoaded, setIsDataLoaded] = useState(false);
+const [data, setData] = useState([]);
 
 useEffect(() => {
   const fetchData = async () => {
@@ -69,7 +88,7 @@ function Component() {
     if (isDataLoaded) {
       await JsonToEpub({
         data,
-        bookPropertiesObs: {
+        bookIntroBack: {
           intro: { content: front, title: 'Введение' },
           back: { content: back, title: 'Послесловие' },
         },

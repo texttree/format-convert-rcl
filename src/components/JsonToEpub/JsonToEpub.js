@@ -5,14 +5,15 @@ import JsonToHtml from '../JsonToHtml/JsonToHtml';
 async function JsonToEpub({
   data,
   styleObj,
-  bookPropertiesObs = {},
+  options,
   showImages = true,
+  bookIntroBack = {},
   fileName = 'obs.epub',
   imageUrl = 'https://cdn.door43.org/obs/jpg/360px/',
-  options,
 }) {
-  const { intro, back } = bookPropertiesObs;
+  const { intro, back } = bookIntroBack;
   let chapters = [];
+
   if (intro) {
     chapters.push({
       beforeToc: true,
@@ -21,6 +22,7 @@ async function JsonToEpub({
       content: intro.content,
     });
   }
+
   chapters = [
     ...chapters,
     ...data.map((chapter) => ({
@@ -34,18 +36,16 @@ async function JsonToEpub({
       }),
     })),
   ];
+
   if (back) {
     chapters = [
       ...chapters,
       {
-        beforeToc: false,
-        excludeFromToc: false,
         title: back.title,
         content: back.content,
       },
     ];
   }
-  // https://github.com/cpiber/epub-gen-memory#options
 
   try {
     const epubFile = await epub(options, chapters);
