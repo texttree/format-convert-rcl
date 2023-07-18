@@ -8,12 +8,10 @@ async function JsonToEpub({
   bookPropertiesObs = {},
   showImages = true,
   fileName = 'obs.epub',
-  combineVerses = false,
-  showVerseNumber = false,
   imageUrl = 'https://cdn.door43.org/obs/jpg/360px/',
+  options,
 }) {
-  // intro: {title, content} and back: {title, content} - HTML format
-  const { projectTitle, title, intro, back, copyright } = bookPropertiesObs;
+  const { intro, back } = bookPropertiesObs;
   let chapters = [];
   if (intro) {
     chapters.push({
@@ -48,16 +46,7 @@ async function JsonToEpub({
     ];
   }
   // https://github.com/cpiber/epub-gen-memory#options
-  const options = {
-    title: 'Открытые Библейские Истории',
-    author: 'TextTree',
-    lang: 'Русский',
-    publisher: 'TextTree Movement Publisher',
-    // fonts,
-    numberChaptersInTOC: false,
-    tocTitle: 'Оглавление',
-    verbose: true,
-  };
+
   try {
     const epubFile = await epub(options, chapters);
     saveAs(epubFile, fileName);
