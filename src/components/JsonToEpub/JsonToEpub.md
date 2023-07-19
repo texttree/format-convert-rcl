@@ -17,7 +17,7 @@
 
 You can see the full list of options by visiting the library [epub-gen-memory](https://github.com/cpiber/epub-gen-memory#options)
 
-### An example of converting a JSON object back to an MD file
+### An example of converting a JSON object to an EPUB file
 
 ```jsx
 import { useState, useEffect } from 'react';
@@ -40,7 +40,7 @@ useEffect(() => {
         .map(
           (_, index) =>
             'https://git.door43.org/ru_gl/ru_obs/raw/branch/master/content/' +
-            ('000' + (index + 1)).slice(-2) +
+            ('0' + (index + 1)).slice(-2) +
             '.md'
         );
       try {
@@ -76,7 +76,7 @@ useEffect(() => {
 const options = {
   title: 'Открытые Библейские Истории',
   author: 'TextTree',
-  lang: 'Русский',
+  lang: 'ru',
   publisher: 'TextTree Movement Publisher',
   numberChaptersInTOC: false,
   tocTitle: 'Оглавление',
