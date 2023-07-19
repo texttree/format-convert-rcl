@@ -51,7 +51,7 @@ async function JsonToEpub({
     const epubFile = await epub(options, chapters);
     saveAs(epubFile, fileName);
   } catch (error) {
-    throw new Error('Error converting Markdown to JSON: ' + error.message);
+    throw new Error('Error generating EPUB: ' + error.message);
   }
 }
 
