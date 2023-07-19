@@ -6,10 +6,16 @@ export default function JsonToHtml() {
 }
 
 JsonToHtml.defaultProps = {
+  showTitle: true,
+  showImages: true,
   imageUrl: 'https://cdn.door43.org/obs/jpg/360px/',
 };
 
 JsonToHtml.propTypes = {
+  /** option that disables the display of images in HTML */
+  showImages: PropTypes.bool,
+  /** option to disable the display of the title in HTML */
+  showTitle: PropTypes.bool,
   /** JSON object to convert to HTML markup */
   jsonData: PropTypes.shape({
     /** array of verse objects. Each array element has three properties: path, text, and verse. */

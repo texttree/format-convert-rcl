@@ -47,7 +47,7 @@ function Component() {
           image: 'padding-bottom: 16px;',
           reference: 'font-style: italic; margin-top: 16px',
         };
-        const htmlData = JsonToHtml(jsonData, styleObj);
+        const htmlData = JsonToHtml({ jsonData, styleObj });
         setHtmlData(htmlData);
       }
     };
