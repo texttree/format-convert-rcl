@@ -1,4 +1,4 @@
-import epub from 'epub-gen-memory/bundle';
+import epub from '@texttree/epub-gen-memory/bundle';
 import { saveAs } from 'file-saver';
 import JsonToHtml from '../JsonToHtml/JsonToHtml';
 
