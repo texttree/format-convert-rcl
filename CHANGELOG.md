@@ -2,16 +2,39 @@
 
 This repository is part of the open components ecosystem.
 
-## [0.4.0](https://github.com/texttree/obs-format-convert-rcl/compare/v0.3.0...v0.4.0) (2023-07-17)
+### [0.4.1](https://github.com/texttree/obs-format-convert-rcl/compare/v0.3.0...v0.4.1) (2023-07-21)
 
 ### Features
 
+- :construction: create epub ([2ba5ff0](https://github.com/texttree/obs-format-convert-rcl/commit/2ba5ff0a3d92ddd6ca451104a5e3f207cacd2733))
 - :construction: show/hide page headers/footers ([fe16082](https://github.com/texttree/obs-format-convert-rcl/commit/fe160820e23814bc4063eb67a510d80901bac987))
+- :sparkles: added description and moved JsonToEpub settings ([28f2e7d](https://github.com/texttree/obs-format-convert-rcl/commit/28f2e7d03745869f6296548fce77de39054caf64))
 - :sparkles: added table of contents шт PDF ([37c9815](https://github.com/texttree/obs-format-convert-rcl/commit/37c9815b68efbd26b292893a96feebeb2373ef34))
 - :sparkles: wip bring PDF to view in Figma (headers and footers) ([b96b96b](https://github.com/texttree/obs-format-convert-rcl/commit/b96b96b93a4dc3c3ea53725134060e3e09768721))
 
 ### Bug Fixes
 
+- :ambulance: update epub library ([d82f529](https://github.com/texttree/obs-format-convert-rcl/commit/d82f5293ca5ebf2d2e78cc57a382579b5579efeb))
+- :bug: corrected Victor's remarks ([91257c4](https://github.com/texttree/obs-format-convert-rcl/commit/91257c4e5154971a70dbcc444bf5aa5f767a33f4))
+- :bug: fix error-text ([b374b14](https://github.com/texttree/obs-format-convert-rcl/commit/b374b14cd6efe47dd8859732b2aafb3deb0f6a84))
+- :construction: error correction ([3a3e30b](https://github.com/texttree/obs-format-convert-rcl/commit/3a3e30b20d2139a60c78453a1a6f00c757016154))
+- :construction: fix header ([559be24](https://github.com/texttree/obs-format-convert-rcl/commit/559be24e01bd9eee4431a10105f569d08e12fd16))
+
+## [0.4.0](https://github.com/texttree/obs-format-convert-rcl/compare/v0.3.0...v0.4.0) (2023-07-21)
+
+### Features
+
+- :construction: create epub ([2ba5ff0](https://github.com/texttree/obs-format-convert-rcl/commit/2ba5ff0a3d92ddd6ca451104a5e3f207cacd2733))
+- :construction: show/hide page headers/footers ([fe16082](https://github.com/texttree/obs-format-convert-rcl/commit/fe160820e23814bc4063eb67a510d80901bac987))
+- :sparkles: added description and moved JsonToEpub settings ([28f2e7d](https://github.com/texttree/obs-format-convert-rcl/commit/28f2e7d03745869f6296548fce77de39054caf64))
+- :sparkles: added table of contents шт PDF ([37c9815](https://github.com/texttree/obs-format-convert-rcl/commit/37c9815b68efbd26b292893a96feebeb2373ef34))
+- :sparkles: wip bring PDF to view in Figma (headers and footers) ([b96b96b](https://github.com/texttree/obs-format-convert-rcl/commit/b96b96b93a4dc3c3ea53725134060e3e09768721))
+
+### Bug Fixes
+
+- :ambulance: update epub library ([d82f529](https://github.com/texttree/obs-format-convert-rcl/commit/d82f5293ca5ebf2d2e78cc57a382579b5579efeb))
+- :bug: corrected Victor's remarks ([91257c4](https://github.com/texttree/obs-format-convert-rcl/commit/91257c4e5154971a70dbcc444bf5aa5f767a33f4))
+- :bug: fix error-text ([b374b14](https://github.com/texttree/obs-format-convert-rcl/commit/b374b14cd6efe47dd8859732b2aafb3deb0f6a84))
 - :construction: error correction ([3a3e30b](https://github.com/texttree/obs-format-convert-rcl/commit/3a3e30b20d2139a60c78453a1a6f00c757016154))
 - :construction: fix header ([559be24](https://github.com/texttree/obs-format-convert-rcl/commit/559be24e01bd9eee4431a10105f569d08e12fd16))
 

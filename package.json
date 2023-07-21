@@ -1,7 +1,7 @@
 {
   "name": "@texttree/obs-format-convert-rcl",
   "author": "TextTree.org",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "React component library for formatting and converting OBS data",
   "keywords": [
     "rcl",
@@ -69,11 +69,13 @@
     "react-json-view": "^1.21.3",
     "react-markdown": "^8.0.6",
     "react-styleguidist": "^13.0.0",
+    "showdown": "^2.1.0",
     "shx": "^0.3.4",
     "standard-version": "^9.5.0",
     "webpack": "^5.75.0"
   },
   "dependencies": {
+    "@texttree/epub-gen-memory": "^1.0.10",
     "file-saver": "^2.0.5",
     "jszip": "^3.10.1",
     "pdfmake": "^0.2.7"

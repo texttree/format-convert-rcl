@@ -1,8 +1,10 @@
-function JsonToHtml(
+function JsonToHtml({
   jsonData,
   styleObj,
-  imageUrl = 'https://cdn.door43.org/obs/jpg/360px/'
-) {
+  showImages = true,
+  showTitle = true,
+  imageUrl = 'https://cdn.door43.org/obs/jpg/360px/',
+}) {
   const defaultStyleObj = {
     contentWrapper: 'background-color: #fff; padding: 10px;',
     title: 'font-size: 20px; font-weight: bold; margin-bottom: 10px;',
@@ -21,9 +23,13 @@ function JsonToHtml(
 
       return `
         <div style="${styleObj.verse}">
-          <div style="${styleObj.verseImage}">
+        ${
+          showImages
+            ? `<div style="${styleObj.verseImage}">
             <img src="${urlImage}" alt="verse-image" style="${styleObj.image}">
-          </div>
+          </div>`
+            : ''
+        }
           <div style="${styleObj.verseText}">
             <div style="${styleObj.paragraph}">${text}</div>
           </div>
@@ -34,7 +40,7 @@ function JsonToHtml(
 
   return `
     <div style="${styleObj.contentWrapper}">
-      <div style="${styleObj.title}">${title}</div>
+      ${showTitle ? `<div style="${styleObj.title}">${title}</div>` : ''}
       <div style="${styleObj.verses}">${verseHtml}</div>
       <div style="${styleObj.reference}">${reference}</div>
     </div>
