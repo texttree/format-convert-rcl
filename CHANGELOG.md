@@ -2,6 +2,10 @@
 
 This repository is part of the open components ecosystem.
 
+### [0.4.2](https://github.com/texttree/obs-format-convert-rcl/compare/v0.4.1...v0.4.2) (2023-07-21)
+
+## [0.4.0](https://github.com/texttree/obs-format-convert-rcl/compare/v0.3.0...v0.4.0) (2023-07-17)
+
 ### [0.4.1](https://github.com/texttree/obs-format-convert-rcl/compare/v0.3.0...v0.4.1) (2023-07-21)
 
 ### Features
