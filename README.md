@@ -46,39 +46,37 @@
 
 ## About The Project
 
-The React Component Library includes 5 components.
+The React component library includes six components.
 The name **obs-format-convert-rcl** reflects the main function of the library - converting data from one format to another.
 
-**1. JsonToHtml** takes as arguments a **jsonData** object and a **styleObj** styles object (an optional argument). The function converts the passed JSON object into HTML markup using the specified styles. The structure of the JSON object expected as input must contain the following properties:
+**1. JsonToEpub** provides functionality to create an EPUB file from JSON data. It takes in various parameters including data, styles, options, as well as parameters for handling images.
 
-- title - content title;
-- reference - link or information about the origin of the content;
-- verseObjects - array of verse objects.
+**2. JsonToHtml** transforms input data from JSON format into HTML, using various CSS styles and options for displaying the title and images. It takes an object as an argument, which can have the following properties: **jsonData, styleObj, showImages, showTitle, and imageUrl**. The structure of the JSON object expected as input must contain the following properties:
 
-**2. JsonToMd** takes a ref object as an argument and converts its contents to Markdown format. The ref object structure must contain the following properties:
+- **title** (String): content title;
+- **reference** (String): link or information about the origin of the content;
+- **verseObjects** (Array of verse objects): An array containing objects representing verses, each with the following properties:
 
-- title - content title;
-- reference - link or information about the origin of the content;
-- verseObjects - array of verse objects.
+  - **path** (String): Represents the path to any additional resource associated with the verse, such as an audio file or video URL.
+
+  - **text** (String): Contains the textual content of the verse.
+
+  - **verse** (String): Represents the verse number or any identifier associated with the verse.
+
+**3. JsonToMd** transforms input data from JSON format into Markdown format. It takes an object as an argument, which may have the following properties: title, reference, verseObjects, and imageUrl.
 
 If the ref object has a title property, it will be displayed as a first-level title (#). If the reference property is present, it will be displayed in italics (\_ \_).
 
 The function then loops through the verseObjects array and for each verse object adds the text of the verse in Markdown format. If the verse object contains a urlImage property, it will be rendered as a Markdown image.
 
-**3. JsonToPdf** displays a button to create and download a PDF document based on the data passed. The component uses the pdfMake library to create and manage PDF documents in the browser.
-The component accepts props:
+**4. JsonToPdf** serves to convert JSON data into a PDF document. It imports the libraries pdfmake and file-saver for creating and saving PDF files respectively. It takes various properties to customize the PDF's content and style, including a title, introductory text, back content, styles, and data to be inserted into the PDF. After obtaining all necessary data, it generates a PDF document using a pdfmake document definition. It then saves the document in a specified location on your device.
 
-- **data**, - an object containing the data to generate the PDF. It should have the following structure: **title**, **reference**, **verseObjects**.
+**5. MdToJson** transforms input data in Markdown format into JSON format. It takes a string with Markdown data as an argument.
 
-- **styles**, - an object containing custom styles for the PDF document. It can include styles for the title, link, image, and text. The passed styles are merged with the default inline styles.
-
-- **fileName**, - PDF file name to download.
-
-**4. MdToJson** takes a string in Markdown (md) format and converts it to a JSON object.
 Breaks the input string into blocks based on the empty lines in between. The first block is considered a title, the last block is a link or information about the origin of the content. The remaining blocks are considered verses.
 If an error occurs while converting Markdown to JSON, an exception will be thrown with an error message.
 
-**5. MdToZip** takes a string in Markdown format and creates a ZIP archive containing a file with the given content. The component uses the jszip library to create and manage ZIP archives, and the saveAs function from the file-saver library to load the archive.
+**6. MdToZip** takes a string in Markdown format and creates a ZIP archive containing a file with the given content. The component uses the jszip library to create and manage ZIP archives, and the saveAs function from the file-saver library to load the archive.
 The component accepts props:
 
 - fileName (default document.md) - the name of the file to be created inside the ZIP archive;
@@ -86,7 +84,10 @@ The component accepts props:
 
 ### Built With
 
-- [React.js](https://reactjs.org/)
+- [@texttree/epub-gen-memory](https://www.npmjs.com/package/@texttree/epub-gen-memory)
+- [pdfmake](http://pdfmake.org/#/)
+- [file-saver](https://www.npmjs.com/package/file-saver)
+- [jszip](https://www.npmjs.com/package/jszip)
 - [React Styleguidist](https://react-styleguidist.js.org/)
 
 <a style="text-align: right; display: block" href="#top">(back to top)</a>
