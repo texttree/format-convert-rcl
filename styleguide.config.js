@@ -10,11 +10,11 @@ let sections = [
   {
     name: 'Conversion block',
     components: [
-      'src/components/MdToJson/MdToJson.jsx',
-      'src/components/JsonToMd/JsonToMd.jsx',
-      'src/components/JsonToHtml/JsonToHtml.jsx',
       'src/components/JsonToEpub/JsonToEpub.jsx',
+      'src/components/JsonToHtml/JsonToHtml.jsx',
+      'src/components/JsonToMd/JsonToMd.jsx',
       'src/components/JsonToPdf/JsonToPdf.jsx',
+      'src/components/MdToJson/MdToJson.jsx',
       'src/components/MdToZip/MdToZip.jsx',
     ],
   },
