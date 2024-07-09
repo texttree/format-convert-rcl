@@ -288,13 +288,13 @@ function JsonToPdf({
 
       if (!isLastItem) {
         docDefinition.content.push({
-          text: dataItem.reference,
+          text: dataItem.reference || ' ',
           style: 'reference',
           pageBreak: 'after',
         });
       } else {
         docDefinition.content.push({
-          text: dataItem.reference,
+          text: dataItem.reference || ' ',
           style: 'reference',
         });
       }
@@ -336,6 +336,9 @@ function JsonToPdf({
         let currentChapterTitle = '';
         let leftText = SubtitlePageTitle || '';
 
+        const hasBackPage =
+          bookPropertiesObs?.back && bookPropertiesObs.back.trim() !== '';
+
         for (let i = 0; i < docDefinition.content.length; i++) {
           const contentItem = docDefinition.content[i];
 
@@ -360,21 +363,21 @@ function JsonToPdf({
             startCurrentChapterPage = endCurrentChapterPage;
           }
 
-          if (contentItem?.style === 'back' && startCurrentChapterPage !== 0) {
-            endCurrentChapterPage = contentItem.positions[0].pageNumber;
+          if (i === docDefinition.content.length - 1) {
+            endCurrentChapterPage = hasBackPage
+              ? contentItem.positions[0].pageNumber - 1
+              : contentItem.positions[0].pageNumber;
 
             for (
               let page = startCurrentChapterPage;
-              page < endCurrentChapterPage;
+              page <= endCurrentChapterPage;
               page++
             ) {
               pageHeaders[page] = createPageHeader(leftText, currentChapterTitle);
             }
-
-            currentChapterTitle = '';
-            startCurrentChapterPage = endCurrentChapterPage;
           }
         }
+
         return pageHeaders;
       };
 
